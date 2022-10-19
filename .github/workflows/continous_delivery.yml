@@ -2,9 +2,9 @@
 name: Continous Delivery
 
 on:
-  push:
-  release:
-    types: [published]
+  workflow_run:
+    workflows: [Continous Integration]
+    types: [completed]
   workflow_dispatch:
 
 env:
