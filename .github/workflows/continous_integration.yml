@@ -54,6 +54,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+    steps:
       # https://github.com/actions/checkout
       - name: Check out workspace repository
         uses: actions/checkout@v3
