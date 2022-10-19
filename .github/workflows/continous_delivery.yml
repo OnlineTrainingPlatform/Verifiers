@@ -4,7 +4,8 @@ name: Continous Delivery
 on:
   workflow_run:
     workflows: ["Continous Integration"]
-    types: [completed]
+    types:
+      - completed
   workflow_dispatch:
 
 env:
