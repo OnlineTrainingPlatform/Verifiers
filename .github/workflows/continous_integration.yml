@@ -66,10 +66,10 @@ jobs:
       - name: Run tests
         run: npm run test:ci
         # Ensure security and coverage checks are done
-        continue-on-error: true
       # https://github.com/marketplace/actions/jest-coverage-comment
       - name: Jest coverage comment
         # Run this even if a test fails
+        if: ${{ always() }}
         id: coverageComment
         uses: MishaKav/jest-coverage-comment@main
         with:
@@ -101,14 +101,16 @@ jobs:
       - name: Snyk
       # https://github.com/snyk/actions
         uses: snyk/actions/node@master
-        # Ensure that the SARIF gets uploaded
-        continue-on-error: true
+        # Run this even if a test fails
+        if: ${{ always() }}
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: --severity-threshold=${{ env.SNYK_THRESHOLD }}
             --sarif-file-output=${{ env.SNYK_OUT_FILE }}
       - name: Upload result to GitHub Code Scanning
+        # Run this even if a test fails
+        if: ${{ always() }}
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: ${{ env.SNYK_OUT_FILE }}
