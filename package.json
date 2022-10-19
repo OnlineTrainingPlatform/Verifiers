@@ -10,6 +10,7 @@
     "start": "npm run build && node build/index.js",
     "lint": "eslint . --ext .ts --fix",
     "format": "npm run prettier-format",
+    "audit": "npm audit",
     "prettier-format": "run-script-os",
     "prettier-format:win32": "prettier --config .prettierrc \"./src/**/*.ts\" \"./healthcheck.js\" --write",
     "prettier-format:darwin:linux": "prettier --config .prettierrc 'src/**/*.ts' './healthcheck.js' --write",

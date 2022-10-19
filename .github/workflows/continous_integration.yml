@@ -102,11 +102,16 @@ jobs:
           echo "coverage - ${{ steps.coverageComment.outputs.coverage }}"
           echo "color - ${{ steps.coverageComment.outputs.color }}"
 
+     - name: Audit dependencies
+        # Run this even if a test fails
+        if: ${{ always() }}
+        run: npm run audit
+
   security:
     needs: testing
 
     runs-on: ubuntu-latest
-    
+
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Snyk Code
