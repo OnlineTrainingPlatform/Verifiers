@@ -1,0 +1,33 @@
+name: Continous Integration
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  styling:
+    strategy:
+      matrix:
+        node-version: [16.x]
+        os: [ubuntu-latest]
+
+    steps:
+      # https://github.com/actions/checkout
+      - name: Check out workspace repository
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+      # https://github.com/actions/setup-node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install NPM development dependencies
+        run: npm ci
+      - name: Run formatting
+        run: npm run format
+      - name: Push formatting
+      # https://github.com/marketplace/actions/add-commit
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: Pretty Please
+          message: 'format: Automatic formatted stuff'
+          push: true
