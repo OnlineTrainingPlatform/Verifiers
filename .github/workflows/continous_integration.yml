@@ -70,6 +70,7 @@ jobs:
       # https://github.com/marketplace/actions/jest-coverage-comment
       - name: Jest coverage comment
         if: ${{ always() }}
+        id: coverageComment
         uses: MishaKav/jest-coverage-comment@main
         with:
           hide-comment: true
@@ -79,8 +80,3 @@ jobs:
           echo "Coverage Percantage - ${{ steps.coverageComment.outputs.coverage }}"
           echo "Coverage Color - ${{ steps.coverageComment.outputs.color }}"
           echo "Summary Html - ${{ steps.coverageComment.outputs.summaryHtml }}"
-      - name: Generating coverage badges
-        uses: jpb06/jest-badges-action@latest
-        with:
-          coverage-summary-path: ./coverage/coverage-summary.json
-          branches: main
