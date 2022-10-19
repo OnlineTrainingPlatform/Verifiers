@@ -67,3 +67,8 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm run test:ci
+      # https://github.com/marketplace/actions/jest-coverage-comment
+      - name: Jest coverage comment
+        uses: MishaKav/jest-coverage-comment@main
+        with:
+          coverage-summary-path: ./coverage/coverage-summary.json
