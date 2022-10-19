@@ -81,5 +81,5 @@ jobs:
           echo "Summary Html - ${{ steps.coverageComment.outputs.summaryHtml }}"
       - name: Generating coverage badges
         uses: jpb06/jest-badges-action@latest
-          with:
-            coverage-summary-path: ./coverage/coverage-summary.json
+        with:
+          coverage-summary-path: ./coverage/coverage-summary.json
