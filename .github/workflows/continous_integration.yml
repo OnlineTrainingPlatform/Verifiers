@@ -7,7 +7,7 @@ on:
 env:
   # https://docs.snyk.io/features/snyk-cli/guides-for-our-cli/set-severity-thresholds-for-cli-tests
   SNYK_THRESHOLD: low #low|medium|high|critical
-  SNYK_OUT_FILE: snyk.sarif
+  SNYK_CODE_OUT_FILE: snyk.sarif
 
 jobs:
   styling:
@@ -63,6 +63,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install NPM development dependencies
         run: npm ci
+
       - name: Run tests
         run: npm run test:ci
         # Ensure security and coverage checks are done
@@ -81,6 +82,8 @@ jobs:
           create-new-comment: false
           hide-summary: false
       - name: Check the output coverage
+        # Run this even if a test fails
+        if: ${{ always() }}
         run: |
           echo "Summary Report"
           echo "Coverage Percantage - ${{ steps.coverageComment.outputs.coverage }}"
@@ -98,19 +101,26 @@ jobs:
           echo "statements - ${{ steps.coverageComment.outputs.statements }}"
           echo "coverage - ${{ steps.coverageComment.outputs.coverage }}"
           echo "color - ${{ steps.coverageComment.outputs.color }}"
-      - name: Snyk
+
+  security:
+    needs: testing
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Snyk Code
       # https://github.com/snyk/actions
         uses: snyk/actions/node@master
         # Run this even if a test fails
-        if: ${{ always() }}
+        if: ${{ always() && github.event_name == 'pull_request' }}
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: --severity-threshold=${{ env.SNYK_THRESHOLD }}
-            --sarif-file-output=${{ env.SNYK_OUT_FILE }}
+            --sarif-file-output=${{ env.SNYK_CODE_OUT_FILE }}
       - name: Upload result to GitHub Code Scanning
         # Run this even if a test fails
-        if: ${{ always() }}
+        if: ${{ always() && github.event_name == 'pull_request' }}
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: ${{ env.SNYK_OUT_FILE }}
+          sarif_file: ${{ env.SNYK_CODE_OUT_FILE }}
