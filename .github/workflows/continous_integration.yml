@@ -70,19 +70,16 @@ jobs:
       # https://github.com/marketplace/actions/jest-coverage-comment
       - name: Jest coverage comment
         if: ${{ always() }}
+        id: coverageComment
         uses: MishaKav/jest-coverage-comment@main
         with:
           coverage-summary-path: ./coverage/coverage-summary.json
-          title: My Jest Coverage Comment
-          summary-title: My Summary Title
+          title: Jest Coverage
+          summary-title: jest Summary
           badge-title: Coverage
           hide-comment: false
           create-new-comment: false
           hide-summary: false
-          junitxml-title: My Junit Title
-          junitxml-path: ./coverage/junit.xml
-          coverage-title: My Coverage Title
-          coverage-path: ./coverage.txt
       - name: Check the output coverage
         run: |
           echo "Summary Report"
