@@ -45,6 +45,8 @@ jobs:
           push: true
 
   testing:
+    needs: styling
+
     strategy:
       matrix:
         node-version: [15.x, 16.x]
