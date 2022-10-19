@@ -106,13 +106,12 @@ jobs:
     needs: testing
 
     runs-on: ubuntu-latest
-
+    
+    if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Snyk Code
       # https://github.com/snyk/actions
         uses: snyk/actions/node@master
-        # Run this even if a test fails
-        if: ${{ always() && github.event_name == 'pull_request' }}
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
@@ -120,7 +119,7 @@ jobs:
             --sarif-file-output=${{ env.SNYK_CODE_OUT_FILE }}
       - name: Upload result to GitHub Code Scanning
         # Run this even if a test fails
-        if: ${{ always() && github.event_name == 'pull_request' }}
+        if: ${{ always() }}
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: ${{ env.SNYK_CODE_OUT_FILE }}
