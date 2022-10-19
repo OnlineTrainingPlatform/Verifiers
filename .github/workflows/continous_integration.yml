@@ -72,4 +72,14 @@ jobs:
         if: ${{ always() }}
         uses: MishaKav/jest-coverage-comment@main
         with:
+          hide-comment: true
+          coverage-summary-path: ./coverage/coverage-summary.json
+      - name: Check the output coverage
+        run: |
+          echo "Coverage Percantage - ${{ steps.coverageComment.outputs.coverage }}"
+          echo "Coverage Color - ${{ steps.coverageComment.outputs.color }}"
+          echo "Summary Html - ${{ steps.coverageComment.outputs.summaryHtml }}"
+    - name: Generating coverage badges
+      uses: jpb06/jest-badges-action@latest
+        with:
           coverage-summary-path: ./coverage/coverage-summary.json
