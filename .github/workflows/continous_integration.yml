@@ -78,7 +78,6 @@ jobs:
           echo "Summary Report"
           echo "Coverage Percantage - ${{ steps.coverageComment.outputs.coverage }}"
           echo "Coverage Color - ${{ steps.coverageComment.outputs.color }}"
-          echo "Summary Html - ${{ steps.coverageComment.outputs.summaryHtml }}"
           echo "Junit Report"
           echo "tests - ${{ steps.coverageComment.outputs.tests }}"
           echo "skipped - ${{ steps.coverageComment.outputs.skipped }}"
@@ -92,4 +91,3 @@ jobs:
           echo "statements - ${{ steps.coverageComment.outputs.statements }}"
           echo "coverage - ${{ steps.coverageComment.outputs.coverage }}"
           echo "color - ${{ steps.coverageComment.outputs.color }}"
-          echo "Coverage Html - ${{ steps.coverageComment.outputs.coverageHtml }}"
