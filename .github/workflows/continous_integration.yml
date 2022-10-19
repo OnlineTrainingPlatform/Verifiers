@@ -49,8 +49,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [15.x, 16.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [16.x]
+        os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
 
@@ -69,6 +69,7 @@ jobs:
         run: npm run test:ci
       # https://github.com/marketplace/actions/jest-coverage-comment
       - name: Jest coverage comment
+        if: ${{ always() }}
         uses: MishaKav/jest-coverage-comment@main
         with:
           coverage-summary-path: ./coverage/coverage-summary.json
