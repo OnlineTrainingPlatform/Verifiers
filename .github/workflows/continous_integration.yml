@@ -99,7 +99,7 @@ jobs:
           echo "coverage - ${{ steps.coverageComment.outputs.coverage }}"
           echo "color - ${{ steps.coverageComment.outputs.color }}"
       - name: Snyk
-        # Run this even if a test fails
+      # https://github.com/snyk/actions
         uses: snyk/actions/node@master
         # Ensure that the SARIF gets uploaded
         continue-on-error: true
