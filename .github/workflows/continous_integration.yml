@@ -26,11 +26,20 @@ jobs:
         run: npm ci
       - name: Run formatting
         run: npm run format
-      - name: Push formatting
+      - name: Run linting
+        run: npm run lint
+        if: github.event_name != 'pull_request'
+      - name: Run linting review
+        uses: reviewdog/action-eslint@v1
+        if: github.event_name == 'pull_request'
+        with:
+          reporter: eslint check
+          eslint_flags: '--fix'
+      - name: Push formatting and linting fixes
       # https://github.com/marketplace/actions/add-commit
         uses: EndBug/add-and-commit@v9
         with:
           committer_name: GitHub Actions
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
-          message: 'format: Automatic formatted stuff'
+          message: 'format: Automatic formatted and linted stuff'
           push: true
