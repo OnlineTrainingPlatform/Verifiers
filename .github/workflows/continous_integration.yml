@@ -28,13 +28,6 @@ jobs:
         run: npm run format
       - name: Run linting
         run: npm run lint
-        if: github.event_name != 'pull_request'
-      - name: Run linting review
-        uses: reviewdog/action-eslint@v1
-        if: github.event_name == 'pull_request'
-        with:
-          reporter: eslint check
-          eslint_flags: '--fix'
       - name: Push formatting and linting fixes
       # https://github.com/marketplace/actions/add-commit
         uses: EndBug/add-and-commit@v9
