@@ -19,7 +19,8 @@
     "prettier-watch:darwin:linux": "onchange 'src/**/*.ts' './healthcheck.js' -- prettier --write {{changed}}",
     "prettier-watch:default": "onchange 'src/**/*.ts' './healthcheck.js' -- prettier --write {{changed}}",
     "test": "jest",
-    "test:dev": "jest --watchAll"
+    "test:dev": "jest --watchAll",
+    "test:ci": "jest --json --outputFile=jest_result.json --testLocationInResults"
   },
   "husky": {
     "hooks": {
