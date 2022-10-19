@@ -3,7 +3,7 @@ name: Continous Delivery
 
 on:
   workflow_run:
-    workflows: [Continous Integration]
+    workflows: ["Continous Integration"]
     types: [completed]
   workflow_dispatch:
 
