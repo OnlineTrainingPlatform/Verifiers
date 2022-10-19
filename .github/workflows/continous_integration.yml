@@ -31,5 +31,6 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           author_name: Pretty Please
+          committer_name: Pretty Please
           message: 'format: Automatic formatted stuff'
           push: true
