@@ -102,7 +102,7 @@ jobs:
           echo "coverage - ${{ steps.coverageComment.outputs.coverage }}"
           echo "color - ${{ steps.coverageComment.outputs.color }}"
 
-     - name: Audit dependencies
+      - name: Audit dependencies
         # Run this even if a test fails
         if: ${{ always() }}
         run: npm run audit
