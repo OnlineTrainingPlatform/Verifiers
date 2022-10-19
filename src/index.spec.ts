@@ -2,6 +2,6 @@ import { sum } from './index';
 
 describe('test', () => {
   test('sum', async () => {
-    expect(sum(1, 1)).toEqual(21);
+    expect(sum(1, 1)).toEqual(2);
   });
 });
