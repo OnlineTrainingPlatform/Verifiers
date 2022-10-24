@@ -1,7 +1,9 @@
 import { IUseCase } from './i_use_case';
 import { IVerifier } from '../../domain';
 
-export interface IVerifySolutionRequest {}
+export interface IVerifySolutionRequest {
+  xmlFile: string
+}
 export interface IVerifySolutionReponse {}
 
 export class VerifySolutionUsecase
@@ -16,8 +18,6 @@ export class VerifySolutionUsecase
   public async do(
     request: IVerifySolutionRequest,
   ): Promise<IVerifySolutionReponse> {
-    return {
-      exercises: await this.verifier.verifySolution(request),
-    };
-  }
+    return await this.verifier.verifySolution(request.xmlFile),
+} 
 }

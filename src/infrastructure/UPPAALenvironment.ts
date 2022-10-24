@@ -10,7 +10,9 @@ export class UPPAALenvironment {
     this._result = undefined;
   }
 
-  execute(): verifytaOutput {}
+  execute(): string {
+    throw new Error('not Implemented');
+  }
 
   get result(): VerifytaResult | undefined {
     return this._result;

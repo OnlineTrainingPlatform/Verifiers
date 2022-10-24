@@ -1,16 +1,20 @@
-import { VerifySolutionUsecase } from '..';
-//import { IExerciseRepository } from '../../domain';
+import {
+  IVerifySolutionReponse,
+  IVerifySolutionRequest,
+  VerifySolutionUsecase,
+} from '..';
+import { IVerifier } from '../../infrastructure';
 
 export class User {
-  private readonly verifySolution: VerifySolutionUsecase;
+  private readonly verifySolutionUsecase: VerifySolutionUsecase;
 
   constructor(verifier: IVerifier) {
-    this.verifySolution = new VerifySolutionUsecase(verifier);
+    this.verifySolutionUsecase = new VerifySolutionUsecase(verifier);
   }
 
   public async verifySolution(
     request: IVerifySolutionRequest,
   ): Promise<IVerifySolutionReponse> {
-    return this.verifySolution.do(request);
+    return this.verifySolutionUsecase.do(request);
   }
 }
