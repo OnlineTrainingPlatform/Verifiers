@@ -1,4 +1,4 @@
-[![Continous Integration](https://github.com/OnlineTrainingPlatform/nodeTemplate/actions/workflows/continous_integration.yml/badge.svg)](https://github.com/OnlineTrainingPlatform/nodeTemplate/actions/workflows/continous_integration.yml)
+[![Continous Integration](https://github.com/OnlineTrainingPlatform/Verifiers/actions/workflows/continous_integration.yml/badge.svg)](https://github.com/OnlineTrainingPlatform/Verifiers/actions/workflows/continous_integration.yml)
 [![Continous Delivery](https://github.com/OnlineTrainingPlatform/nodeTemplate/actions/workflows/continous_delivery.yml/badge.svg)](https://github.com/OnlineTrainingPlatform/nodeTemplate/actions/workflows/continous_delivery.yml)
 # 🧰 Simple TypeScript Starter | 2022
 
