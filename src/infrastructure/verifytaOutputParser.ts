@@ -1,7 +1,14 @@
 import { VerifytaResult } from './VerifytaResult';
 
 export class VerifytaOutputParser {
-  private readonly _output: string;
+  private _output: string;
+
+  /**
+   *
+   */
+  constructor() {
+    this._output = '';    
+  }
 
   parse(verifytaOuput: string): VerifytaResult {
     throw console.error('not implemented');

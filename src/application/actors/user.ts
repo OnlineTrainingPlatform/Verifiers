@@ -1,9 +1,9 @@
 import {
-  IVerifySolutionReponse,
+  //IVerifySolutionReponse,
   IVerifySolutionRequest,
   VerifySolutionUsecase,
 } from '..';
-import { IVerifier } from '../../infrastructure';
+import { IVerifier, VerifytaResult } from '../../infrastructure';
 
 export class User {
   private readonly verifySolutionUsecase: VerifySolutionUsecase;
@@ -14,7 +14,7 @@ export class User {
 
   public async verifySolution(
     request: IVerifySolutionRequest,
-  ): Promise<IVerifySolutionReponse> {
+  ): Promise<VerifytaResult> {
     return this.verifySolutionUsecase.do(request);
   }
 }

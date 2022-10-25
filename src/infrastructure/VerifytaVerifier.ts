@@ -1,16 +1,22 @@
-import { setFlagsFromString } from 'v8';
 import { IVerifier } from './IVerifier';
 import { VerifytaResult } from './VerifytaResult';
 import { VerifytaOutputParser } from './VerifytaOutputParser';
+import { UPPAALenvironment } from './UPPAALenvironment';
 
 export class VerifytaVerifier implements IVerifier {
   private readonly parser: VerifytaOutputParser;
+  private readonly environment: UPPAALenvironment;
 
-  constructor() {
-    this.parser = new VerifytaOutputParser();
+  constructor(
+    verifytaOutputParser: VerifytaOutputParser,
+    environment: UPPAALenvironment,
+  ) {
+    this.parser = verifytaOutputParser;
+    this.environment = environment;
   }
 
   verifySolution(xmlFile: string): VerifytaResult {
-    throw new Error('Method not implemented.');
+    const result = this.environment.execute(xmlFile);
+    return this.parser.parse(result);
   }
 }

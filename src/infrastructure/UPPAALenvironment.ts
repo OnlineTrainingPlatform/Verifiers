@@ -1,16 +1,14 @@
 import { VerifytaResult } from './VerifytaResult';
 
 export class UPPAALenvironment {
-  private readonly _xmlFile: string;
   private readonly _result?: VerifytaResult;
 
   // todo
-  constructor(xmlFile: string) {
-    this._xmlFile = xmlFile;
+  constructor() {
     this._result = undefined;
   }
 
-  execute(): string {
+  execute(xmlFile: string): string {
     throw new Error('not Implemented');
   }
 
