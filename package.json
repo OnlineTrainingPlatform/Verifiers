@@ -52,6 +52,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "fastify": "^4.9.2"
+    "fastify": "^4.9.2",
+    "fastify-xml-body-parser": "^2.1.1"
   }
 }

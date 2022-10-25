@@ -6,9 +6,9 @@ import {
   VerifytaVerifier,
 } from '../infrastructure';
 
-type Body = {
-  name: string;
-};
+interface IXMLfile {
+  nta: string
+}
 
 export async function exerciseController(
   fastify: FastifyInstance,
@@ -22,8 +22,8 @@ export async function exerciseController(
         new UPPAALenvironment(),
       );
       const user = new User(verifier);
-      const body = request.body;
-      console.log(body);
+      const body: IXMLfile = request.body as IXMLfile;
+      reply.send(body)
       //reply.send(await user.verifySolution({}));
     },
   );
