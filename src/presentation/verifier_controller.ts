@@ -6,11 +6,7 @@ import {
   VerifytaVerifier,
 } from '../infrastructure';
 
-interface IXMLfile {
-  nta: string
-}
-
-export async function exerciseController(
+export async function verifierController(
   fastify: FastifyInstance,
   opts: any,
 ): Promise<void> {
@@ -22,9 +18,9 @@ export async function exerciseController(
         new UPPAALenvironment(),
       );
       const user = new User(verifier);
-      const body: IXMLfile = request.body as IXMLfile;
-      reply.send(body)
-      //reply.send(await user.verifySolution({}));
+      const xml_input: string = request.body as string;
+      const response = await user.verifySolution({xmlFile: xml_input})
+      reply.send(response);
     },
   );
 }

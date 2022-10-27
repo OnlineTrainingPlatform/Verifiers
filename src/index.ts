@@ -1,10 +1,10 @@
 import fastify from 'fastify';
-import { exerciseController } from './presentation';
+import { verifierController } from './presentation';
 
 
 const server = fastify();
 server.register(require('fastify-xml-body-parser'))
-server.register(exerciseController);
+server.register(verifierController);
 
 server.listen({ port: 8081 }, (err, address) => {
   if (err) {

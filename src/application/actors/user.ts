@@ -1,12 +1,13 @@
 import {
-  //IVerifySolutionReponse,
+  IUseCase,
+  IVerifySolutionReponse,
   IVerifySolutionRequest,
   VerifySolutionUsecase,
 } from '..';
 import { IVerifier, VerifytaResult } from '../../infrastructure';
 
 export class User {
-  private readonly verifySolutionUsecase: VerifySolutionUsecase;
+  private readonly verifySolutionUsecase: IUseCase<IVerifySolutionRequest, IVerifySolutionReponse>;
 
   constructor(verifier: IVerifier) {
     this.verifySolutionUsecase = new VerifySolutionUsecase(verifier);
@@ -14,7 +15,7 @@ export class User {
 
   public async verifySolution(
     request: IVerifySolutionRequest,
-  ): Promise<VerifytaResult> {
+  ): Promise<IVerifySolutionReponse> {
     return this.verifySolutionUsecase.do(request);
   }
 }

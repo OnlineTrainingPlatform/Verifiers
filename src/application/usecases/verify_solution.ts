@@ -4,12 +4,13 @@ import { VerifytaResult, IVerifier } from '../../infrastructure';
 export interface IVerifySolutionRequest {
   xmlFile: string;
 }
-// export interface IVerifySolutionReponse {
-//   result: VerifytaResult
-// }
+
+export interface IVerifySolutionReponse {
+  result: VerifytaResult
+}
 
 export class VerifySolutionUsecase
-  implements IUseCase<IVerifySolutionRequest, VerifytaResult>
+  implements IUseCase<IVerifySolutionRequest, IVerifySolutionReponse>
 {
   private readonly verifier: IVerifier;
 
@@ -17,7 +18,8 @@ export class VerifySolutionUsecase
     this.verifier = verifier;
   }
 
-  public async do(request: IVerifySolutionRequest): Promise<VerifytaResult> {
-    return await this.verifier.verifySolution(request.xmlFile);
+  public async do(request: IVerifySolutionRequest): Promise<IVerifySolutionReponse> {
+    const result = await this.verifier.verifySolution(request.xmlFile);
+    return {result};
   }
 }
