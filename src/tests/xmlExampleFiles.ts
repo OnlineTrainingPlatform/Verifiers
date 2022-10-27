@@ -1,5 +1,6 @@
 export const xmlFileWithSyntaxErrors = '...';
 export const xmlFileWithoutSyntaxErrors = '...';
 
-export const xmlfileWithAllTrueQuiries = '...';
-export const xmlfileWithAllFalseQuiries = '...';
+export const xmlfileWithTwoTrueQuiries = '...';
+export const xmlfileWithTwoFalseQuiries = '...';
+export const xmlfileWithOneFalseAndOneTrueQuiry = '...';
