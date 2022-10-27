@@ -9,13 +9,8 @@
   ],
   "rules": {
     "no-console": 1,
-    "prettier/prettier": [
-      2,
-      "error",
-      {
-        "endOfLine": "auto",
-      }
-    ]
+    "prettier/prettier": 2,
+    "endOfLine": 0
   },
   "env": {
     "browser": true,

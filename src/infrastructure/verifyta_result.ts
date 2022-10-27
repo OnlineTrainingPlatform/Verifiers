@@ -1,4 +1,4 @@
-export class VerifytaResult{
+export class VerifytaResult {
   private readonly _queriesPassedDict: Map<string, boolean>;
   private readonly _hasSyntaxErrors: boolean;
 

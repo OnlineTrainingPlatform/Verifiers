@@ -1,6 +1,6 @@
-import { VerifytaResult } from './VerifytaResult';
+import { VerifytaResult } from './verifyta_result';
 
-export class UPPAALenvironment {
+export class VerifytaEnvironment {
   private readonly _result?: VerifytaResult;
 
   // todo

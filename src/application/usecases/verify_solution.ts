@@ -6,7 +6,7 @@ export interface IVerifySolutionRequest {
 }
 
 export interface IVerifySolutionReponse {
-  result: VerifytaResult
+  result: VerifytaResult;
 }
 
 export class VerifySolutionUsecase
@@ -18,8 +18,10 @@ export class VerifySolutionUsecase
     this.verifier = verifier;
   }
 
-  public async do(request: IVerifySolutionRequest): Promise<IVerifySolutionReponse> {
+  public async do(
+    request: IVerifySolutionRequest,
+  ): Promise<IVerifySolutionReponse> {
     const result = await this.verifier.verifySolution(request.xmlFile);
-    return {result};
+    return { result };
   }
 }

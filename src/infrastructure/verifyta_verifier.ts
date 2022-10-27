@@ -1,15 +1,15 @@
-import { IVerifier } from './IVerifier';
-import { VerifytaResult } from './VerifytaResult';
-import { VerifytaOutputParser } from './VerifytaOutputParser';
-import { UPPAALenvironment } from './UPPAALenvironment';
+import { IVerifier } from './i_verifier';
+import { VerifytaResult } from './verifyta_result';
+import { VerifytaOutputParser } from './verifyta_output_parser';
+import { VerifytaEnvironment } from './verifyta_environment';
 
 export class VerifytaVerifier implements IVerifier {
   private readonly parser: VerifytaOutputParser;
-  private readonly environment: UPPAALenvironment;
+  private readonly environment: VerifytaEnvironment;
 
   constructor(
     verifytaOutputParser: VerifytaOutputParser,
-    environment: UPPAALenvironment,
+    environment: VerifytaEnvironment,
   ) {
     this.parser = verifytaOutputParser;
     this.environment = environment;

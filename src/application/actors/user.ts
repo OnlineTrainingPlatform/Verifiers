@@ -7,7 +7,10 @@ import {
 import { IVerifier, VerifytaResult } from '../../infrastructure';
 
 export class User {
-  private readonly verifySolutionUsecase: IUseCase<IVerifySolutionRequest, IVerifySolutionReponse>;
+  private readonly verifySolutionUsecase: IUseCase<
+    IVerifySolutionRequest,
+    IVerifySolutionReponse
+  >;
 
   constructor(verifier: IVerifier) {
     this.verifySolutionUsecase = new VerifySolutionUsecase(verifier);

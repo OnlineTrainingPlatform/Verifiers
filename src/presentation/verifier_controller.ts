@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { User } from '../application';
 import {
-  UPPAALenvironment,
+  VerifytaEnvironment,
   VerifytaOutputParser,
   VerifytaVerifier,
 } from '../infrastructure';
@@ -15,11 +15,11 @@ export async function verifierController(
     async (request: FastifyRequest, reply: FastifyReply) => {
       const verifier = new VerifytaVerifier(
         new VerifytaOutputParser(),
-        new UPPAALenvironment(),
+        new VerifytaEnvironment(),
       );
       const user = new User(verifier);
       const xml_input: string = request.body as string;
-      const response = await user.verifySolution({xmlFile: xml_input})
+      const response = await user.verifySolution({ xmlFile: xml_input });
       reply.send(response);
     },
   );
