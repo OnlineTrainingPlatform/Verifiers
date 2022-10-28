@@ -20,7 +20,10 @@ describe('Verifyta result', () => {
     const xml_input = fs.readFileSync(xmlFiles.xmlFileWithSyntaxErrors, 'utf8');
 
     // Act
-    const response = await user.verifySolution({ xmlFile: xml_input });
+    const response = await user.verifySolution({
+      xmlFile: xml_input,
+      queries: [],
+    });
 
     //Assert
     expect(response.result.hasSyntaxErrors).toBe(true);
@@ -34,7 +37,10 @@ describe('Verifyta result', () => {
     );
 
     // Act
-    const response = await user.verifySolution({ xmlFile: xml_input });
+    const response = await user.verifySolution({
+      xmlFile: xml_input,
+      queries: [],
+    });
 
     // Assert
     expect(response.result.hasSyntaxErrors).toBe(false);
@@ -48,7 +54,10 @@ describe('Verifyta result', () => {
     );
 
     // Act
-    const response = await user.verifySolution({ xmlFile: xml_input });
+    const response = await user.verifySolution({
+      xmlFile: xml_input,
+      queries: ['query_1', 'query_2'],
+    });
 
     // Get values
     const queryDict = response.result.passedQueriesResults;
@@ -71,7 +80,10 @@ describe('Verifyta result', () => {
     );
 
     // Act
-    const response = await user.verifySolution({ xmlFile: xml_input });
+    const response = await user.verifySolution({
+      xmlFile: xml_input,
+      queries: ['query_1', 'query_2'],
+    });
 
     // Get values
     const queryDict = response.result.passedQueriesResults;
@@ -95,7 +107,10 @@ describe('Verifyta result', () => {
     );
 
     // Act
-    const response = await user.verifySolution({ xmlFile: xml_input });
+    const response = await user.verifySolution({
+      xmlFile: xml_input,
+      queries: ['query_1', 'query_2'],
+    });
 
     // Get values
     const queryDict = response.result.passedQueriesResults;
