@@ -7,7 +7,7 @@ export const xmlFileWithoutSyntaxErrors =
 // Queries
 export const xmlfileWithTwoTrueQueries =
   './src/test_files/lightswitch_twoQueriesPassing.xml';
-export const xmlfileWithTwoFalseQuiries =
+export const xmlfileWithTwoFalseQueries =
   './src/test_files/lightswitch_twoQueriesFailing.xml';
 export const xmlfileWithOneFalseAndOneTrueQuery =
   './src/test_files/lightswitch_oneQueriesFailingOnePassing.xml';

@@ -18,7 +18,6 @@ describe('Verifyta result', () => {
   it('hasSyntaxErrors=true when given an XML with syntax errors', async () => {
     // Arrange
     const xml_input = fs.readFileSync(xmlFiles.xmlFileWithSyntaxErrors, 'utf8');
-    console.log(xml_input);
 
     // Act
     const response = await user.verifySolution({ xmlFile: xml_input });
@@ -29,7 +28,10 @@ describe('Verifyta result', () => {
 
   it('hasSyntaxErrors=false when given an XML without syntax errors', async () => {
     // Arrange
-    const xml_input = xmlFiles.xmlFileWithoutSyntaxErrors as string;
+    const xml_input = fs.readFileSync(
+      xmlFiles.xmlFileWithoutSyntaxErrors,
+      'utf8',
+    );
 
     // Act
     const response = await user.verifySolution({ xmlFile: xml_input });
@@ -40,13 +42,16 @@ describe('Verifyta result', () => {
 
   it('shows two queries passing when given an XML with two queries passing', async () => {
     // Arrange
-    const xml_input = xmlFiles.xmlfileWithTwoTrueQueries as string;
+    const xml_input = fs.readFileSync(
+      xmlFiles.xmlfileWithTwoTrueQueries,
+      'utf8',
+    );
 
     // Act
     const response = await user.verifySolution({ xmlFile: xml_input });
 
     // Get values
-    const queryDict = response.result.queriesPassedDict;
+    const queryDict = response.result.passedQueriesResults;
 
     const firstQuery = Array.from(queryDict.keys())[0];
     const firstResult = queryDict.get(firstQuery);
@@ -60,13 +65,16 @@ describe('Verifyta result', () => {
 
   it('shows two queries failing when given an XML with two queries failing', async () => {
     // Arrange
-    const xml_input = xmlFiles.xmlfileWithTwoFalseQuiries as string;
+    const xml_input = fs.readFileSync(
+      xmlFiles.xmlfileWithTwoFalseQueries,
+      'utf8',
+    );
 
     // Act
     const response = await user.verifySolution({ xmlFile: xml_input });
 
     // Get values
-    const queryDict = response.result.queriesPassedDict;
+    const queryDict = response.result.passedQueriesResults;
 
     const firstQuery = Array.from(queryDict.keys())[0];
     const firstResult = queryDict.get(firstQuery);
@@ -81,13 +89,16 @@ describe('Verifyta result', () => {
 
   it('shows one query failing and the other passing when given an XML with one failing and passing query', async () => {
     // Arrange
-    const xml_input = xmlFiles.xmlfileWithOneFalseAndOneTrueQuery as string;
+    const xml_input = fs.readFileSync(
+      xmlFiles.xmlfileWithOneFalseAndOneTrueQuery,
+      'utf8',
+    );
 
     // Act
     const response = await user.verifySolution({ xmlFile: xml_input });
 
     // Get values
-    const queryDict = response.result.queriesPassedDict;
+    const queryDict = response.result.passedQueriesResults;
 
     const firstQuery = Array.from(queryDict.keys())[0];
     const firstResult = queryDict.get(firstQuery);

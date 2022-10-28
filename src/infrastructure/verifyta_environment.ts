@@ -16,16 +16,16 @@ export class VerifytaEnvironment {
       '-Command C:\\Users\\freja\\OneDrive\\Dokumenter\\AAU\\6. semester\\MTPCS\\uppaal64-4.1.26\\bin-Windows\\verifyta.exe -u C:\\Users\\freja\\Desktop\\Verifiers\\src\\test_files\\lightswitch_syntaxError.xml',
       { shell: 'powershell.exe' },
       (error, stdout, stderr) => {
-        stdout.on('data', (data: string) => {Console.log(`Received chunk ${data}`);
-      });
-      }
+        stdout.on('data', (data: string) => {
+          Console.log(`Received chunk ${data}`);
+        });
+      },
     );
     return 'hello!';
     // C:\\Users\\freja\\OneDrive\\Dokumenter\\AAU\\6. semester\\MTPCS\\uppaal64-4.1.26\\bin-Windows\\verifyta.exe", "-u", "C:\\Users\\freja\\Desktop\\Verifiers\\src\\test_files\\lightswitch_syntaxError.xml"};
 
     // let spawn = require('child_process').spawn;
     // child = spawn('powershell.exe', ['-Command', 'C:\\Users\\freja\\OneDrive\\Dokumenter\\AAU\\6. semester\\MTPCS\\uppaal64-4.1.26\\bin-Windows\\verifyta.exe', '-u', 'C:\\Users\\freja\\Desktop\\Verifiers\\src\\test_files\\lightswitch_syntaxError.xml']);
-
 
     // child.stdout.on('data', function (data) {
     //   console.log('Powershell Data: ' + data);

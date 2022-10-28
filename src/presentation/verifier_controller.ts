@@ -5,6 +5,7 @@ import {
   VerifytaOutputParser,
   VerifytaVerifier,
 } from '../infrastructure';
+import { QueryExtractor } from '../infrastructure/query_extractor';
 
 export async function verifierController(
   fastify: FastifyInstance,
@@ -19,7 +20,11 @@ export async function verifierController(
       );
       const user = new User(verifier);
       const xml_input: string = request.body as string;
-      const response = await user.verifySolution({ xmlFile: xml_input });
+      const queries = new QueryExtractor(xml_input).extract();
+      const response = await user.verifySolution({
+        xmlFile: xml_input,
+        queries: queries,
+      });
       reply.send(response);
     },
   );
