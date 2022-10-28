@@ -125,7 +125,7 @@ press := 0</label>
 			<comment></comment>
 		</query>
 		<query>
-			<formula>A[] not deadlock</formula>
+			<formula>A[] Switch.x &lt; 3</formula>
 			<comment></comment>
 		</query>
 	</queries>
