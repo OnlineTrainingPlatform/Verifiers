@@ -17,17 +17,17 @@ describe('verifyta output parser', () => {
     expect(actual).toBe(expected);
   });
 
-  it('returns two queries failing', async () => {
-    // Arrange
-    const expected = testStrings.two_queries_failing;
-    const xmlFile = xmlFiles.xmlfileWithTwoFalseQueries;
+  // it('returns two queries failing', async () => {
+  //   // Arrange
+  //   const expected = testStrings.two_queries_failing;
+  //   const xmlFile = xmlFiles.xmlfileWithTwoFalseQueries;
 
-    // Act
-    const actual = environment.execute(xmlFile);
+  //   // Act
+  //   const actual = environment.execute(xmlFile);
 
-    //Assert
-    expect(actual).toBe(expected);
-  });
+  //   //Assert
+  //   expect(actual).toBe(expected);
+  // });
 
   it('returns one query failing and one passing', async () => {
     // Arrange

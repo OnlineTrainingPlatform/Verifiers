@@ -9,34 +9,48 @@ export class VerifytaEnvironment {
     this._result = undefined;
   }
 
-  execute(xmlFilePath: string): string {
+  async execute(xmlFilePath: string): Promise<string> {
     //throw new Error('not Implemented');
-    let data = '';
-    console.log('START');
-    exec(
-      `C:\\Users\\freja\\OneDrive\\Dokumenter\\AAU\\"6. semester"\\MTPCS\\uppaal64-4.1.26\\bin-Windows\\verifyta.exe -u ${xmlFilePath}`,
-      { shell: 'powershell.exe' },
-      (error, stdout, stderr) => {
-        if (stderr) {
-          console.log('ERROR');
-          data = stderr;
-        } else {
-          console.log('STDOUT');
-          data = stdout;
+
+    const command = `C:\\Users\\freja\\OneDrive\\Dokumenter\\AAU\\"6. semester"\\MTPCS\\uppaal64-4.1.26\\bin-Windows\\verifyta.exe -u ${xmlFilePath}`;
+    return new Promise((resolve, reject) => {
+      exec(command, { shell: 'powershell.exe' }, (error, stdout, stderr) => {
+        if (error) {
+          reject(error);
+          return;
         }
-      },
-    );
-    return data;
+        resolve(stdout);
+      });
+    });
+
+    // let data = '';
+    // const proc = await exec(
+    //   `C:\\Users\\freja\\OneDrive\\Dokumenter\\AAU\\"6. semester"\\MTPCS\\uppaal64-4.1.26\\bin-Windows\\verifyta.exe -u ${xmlFilePath}`,
+    //   { shell: 'powershell.exe' },
+    //   (error, stdout, stderr) => {
+    //     console.log('Finished invocation');
+    //     console.log("error: " + error);
+    //     console.log("stdout: " + stdout);
+    //     console.log("stderr: " + stderr)
+    //     data = stdout;
+    //   },
+    // );
   }
 
-  get result(): VerifytaResult | undefined {
-    return this._result;
-  }
+  // get result(): VerifytaResult | undefined {
+  //   return this._result;
+  // }
 }
 
 const env = new VerifytaEnvironment();
-const data = env.execute('blabla');
-console.log(data);
+const data = env
+  .execute(
+    'C:\\Users\\freja\\Desktop\\Verifiers\\src\\test_files\\lightswitch_twoQueriesPassing.xml',
+  )
+  .then((value) => console.log('value: ' + value))
+  .catch((error) => console.log('Error: ' + error));
+
+//console.log('BRAHHH' + data);
 
 // stdout.on('data', (data: string) => {
 //   console.log(`Received chunk ${data}`);
