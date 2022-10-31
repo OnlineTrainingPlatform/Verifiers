@@ -3,6 +3,7 @@ import { VerifytaResult, IVerifier } from '../../infrastructure';
 
 export interface IVerifySolutionRequest {
   xmlFile: string;
+  queries: Array<string>;
 }
 
 export interface IVerifySolutionReponse {

@@ -1,5 +1,9 @@
+import { IQueryResult } from './i_query_result';
 import { VerifytaResult } from './verifyta_result';
 
-export interface IVerifier {
-  verifySolution(solution: string): VerifytaResult;
+export interface IQueryVerifier {
+  verifySolution(
+    solution: string,
+    queries: Array<string>,
+  ): Promise<IQueryResult>;
 }

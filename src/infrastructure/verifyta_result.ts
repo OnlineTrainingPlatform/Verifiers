@@ -1,4 +1,6 @@
-export class VerifytaResult {
+import { IQueryResult } from './i_query_result';
+
+export class VerifytaResult implements IQueryResult {
   private readonly _queriesPassedDict: Map<string, boolean>;
   private readonly _hasSyntaxErrors: boolean;
 
@@ -7,7 +9,7 @@ export class VerifytaResult {
     this._hasSyntaxErrors = hasSyntaxErrors;
   }
 
-  get queriesPassedDict(): Map<string, boolean> {
+  get passedQueriesResults(): Map<string, boolean> {
     return this._queriesPassedDict;
   }
 
