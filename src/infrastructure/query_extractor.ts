@@ -1,11 +1,7 @@
 export class QueryExtractor {
-  private readonly xml_file;
+  constructor() {}
 
-  constructor(xml_file: string) {
-    this.xml_file = xml_file;
-  }
-
-  extract(): Array<string> {
+  extract(xml_file: string): Array<string> {
     throw Error('Not implemented!');
   }
 }

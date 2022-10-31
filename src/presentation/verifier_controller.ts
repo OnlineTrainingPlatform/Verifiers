@@ -20,7 +20,7 @@ export async function verifierController(
       );
       const user = new User(verifier);
       const xml_input: string = request.body as string;
-      const queries = new QueryExtractor(xml_input).extract();
+      const queries = new QueryExtractor().extract(xml_input);
       const response = await user.verifySolution({
         xmlFile: xml_input,
         queries: queries,

@@ -4,7 +4,7 @@ import {
   IVerifySolutionRequest,
   VerifySolutionUsecase,
 } from '..';
-import { IVerifier, VerifytaResult } from '../../infrastructure';
+import { IQueryVerifier } from '../../infrastructure';
 
 export class User {
   private readonly verifySolutionUsecase: IUseCase<
@@ -12,7 +12,7 @@ export class User {
     IVerifySolutionReponse
   >;
 
-  constructor(verifier: IVerifier) {
+  constructor(verifier: IQueryVerifier) {
     this.verifySolutionUsecase = new VerifySolutionUsecase(verifier);
   }
 

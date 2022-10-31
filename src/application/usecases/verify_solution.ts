@@ -1,5 +1,5 @@
 import { IUseCase } from './i_use_case';
-import { VerifytaResult, IVerifier } from '../../infrastructure';
+import { VerifytaResult, IQueryVerifier } from '../../infrastructure';
 
 export interface IVerifySolutionRequest {
   xmlFile: string;
@@ -13,9 +13,9 @@ export interface IVerifySolutionReponse {
 export class VerifySolutionUsecase
   implements IUseCase<IVerifySolutionRequest, IVerifySolutionReponse>
 {
-  private readonly verifier: IVerifier;
+  private readonly verifier: IQueryVerifier;
 
-  constructor(verifier: IVerifier) {
+  constructor(verifier: IQueryVerifier) {
     this.verifier = verifier;
   }
 
