@@ -9,9 +9,17 @@ describe('verifyta output parser', () => {
     // Arrange
     const expected = testStrings.two_queries_passing;
     const xmlFile = xmlFiles.xmlfileWithTwoTrueQueries;
+    let actual;
 
     // Act
-    const actual = environment.execute(xmlFile);
+    const actual = environment
+      .execute(xmlFile)
+      .then((value) =>
+        actual
+      )
+      .catch((error) =>
+        actual = error.verifierOutput;
+      );
 
     //Assert
     expect(actual).toBe(expected);

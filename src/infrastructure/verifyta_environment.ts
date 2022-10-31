@@ -1,54 +1,50 @@
 import { VerifytaResult } from './verifyta_result';
 import { exec } from 'child_process';
 
+interface ICmdResult {
+  verifierOutput: string;
+  verifierError: string;
+  cmdError?: string;
+}
+
 export class VerifytaEnvironment {
   private readonly _result?: VerifytaResult;
 
-  // todo
-  constructor() {
-    this._result = undefined;
-  }
-
-  async execute(xmlFilePath: string): Promise<string> {
-    //throw new Error('not Implemented');
-
+  async execute(xmlFilePath: string): Promise<ICmdResult> {
     const command = `C:\\Users\\freja\\OneDrive\\Dokumenter\\AAU\\"6. semester"\\MTPCS\\uppaal64-4.1.26\\bin-Windows\\verifyta.exe -u ${xmlFilePath}`;
     return new Promise((resolve, reject) => {
       exec(command, { shell: 'powershell.exe' }, (error, stdout, stderr) => {
         if (error) {
-          reject(error);
+          reject({
+            verifierOutput: stdout,
+            verifierError: stderr,
+            cmdError: error,
+          });
           return;
         }
-        resolve(stdout);
+        resolve({
+          verifierOutput: stdout,
+          verifierError: stderr,
+          cmdError: undefined,
+        });
       });
     });
-
-    // let data = '';
-    // const proc = await exec(
-    //   `C:\\Users\\freja\\OneDrive\\Dokumenter\\AAU\\"6. semester"\\MTPCS\\uppaal64-4.1.26\\bin-Windows\\verifyta.exe -u ${xmlFilePath}`,
-    //   { shell: 'powershell.exe' },
-    //   (error, stdout, stderr) => {
-    //     console.log('Finished invocation');
-    //     console.log("error: " + error);
-    //     console.log("stdout: " + stdout);
-    //     console.log("stderr: " + stderr)
-    //     data = stdout;
-    //   },
-    // );
   }
-
-  // get result(): VerifytaResult | undefined {
-  //   return this._result;
-  // }
 }
 
 const env = new VerifytaEnvironment();
 const data = env
   .execute(
-    'C:\\Users\\freja\\Desktop\\Verifiers\\src\\test_files\\lightswitch_twoQueriesPassing.xml',
+    'C:\\Users\\freja\\Desktop\\Verifiers\\src\\test_files\\lightswitch_syntaxError.xml',
   )
-  .then((value) => console.log('value: ' + value))
-  .catch((error) => console.log('Error: ' + error));
+  .then((value) =>
+    console.log(
+      'err value: ' + value.verifierError + 'out value' + value.verifierOutput,
+    ),
+  )
+  .catch((error) =>
+    console.log('stderr:\n' + error.stderr + '\nerror:\n' + error.error),
+  );
 
 //console.log('BRAHHH' + data);
 
