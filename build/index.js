@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fastify_1 = __importDefault(require("fastify"));
 var presentation_1 = require("./presentation");
 var server = (0, fastify_1.default)();
-server.register(require('fastify-xml-body-parser'));
-server.register(presentation_1.exerciseController);
+//server.register(require('fastify-xml-body-parser'));
+server.register(presentation_1.verifierController);
 server.listen({ port: 8081 }, function (err, address) {
     if (err) {
         console.error(err);

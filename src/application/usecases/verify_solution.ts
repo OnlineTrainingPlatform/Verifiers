@@ -1,5 +1,6 @@
 import { IUseCase } from './i_use_case';
-import { VerifytaResult, IQueryVerifier } from '../../infrastructure';
+import { IQueryVerifier } from '../../infrastructure';
+import {IQueryResult} from '../../infrastructure/i_query_result';
 
 export interface IVerifySolutionRequest {
   xmlFile: string;
@@ -7,7 +8,7 @@ export interface IVerifySolutionRequest {
 }
 
 export interface IVerifySolutionReponse {
-  result: VerifytaResult;
+  result: IQueryResult;
 }
 
 export class VerifySolutionUsecase
@@ -22,7 +23,8 @@ export class VerifySolutionUsecase
   public async do(
     request: IVerifySolutionRequest,
   ): Promise<IVerifySolutionReponse> {
-    const result = await this.verifier.verifySolution(request.xmlFile);
-    return { result };
+    const verifytaResult = await this.verifier.verifySolution(request.xmlFile, request.queries);
+    const result = {result: verifytaResult};
+    return Promise.resolve(result);
   }
 }
