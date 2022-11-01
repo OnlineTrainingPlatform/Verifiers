@@ -1,6 +1,8 @@
 import * as testStrings from '../../test_files/test_verifyta_output_strings';
 import { VerifytaEnvironment } from '../verifyta_environment';
 import * as xmlFiles from '../../test_files/xml_example_files';
+import { ICmdResult } from '../i_cmd_result';
+import * as fs from 'fs';
 
 describe('verifyta output parser', () => {
   const environment = new VerifytaEnvironment();
@@ -8,18 +10,10 @@ describe('verifyta output parser', () => {
   it('returns two queries passing', async () => {
     // Arrange
     const expected = testStrings.two_queries_passing;
-    const xmlFile = xmlFiles.xmlfileWithTwoTrueQueries;
-    let actual;
+    const xmlFile = fs.readFileSync(xmlFiles.xmlfileWithTwoTrueQueries, 'utf8');
 
     // Act
-    const actual = environment
-      .execute(xmlFile)
-      .then((value) =>
-        actual
-      )
-      .catch((error) =>
-        actual = error.verifierOutput;
-      );
+    const actual = await environment.execute(xmlFile).verifierOutput;
 
     //Assert
     expect(actual).toBe(expected);
@@ -40,10 +34,14 @@ describe('verifyta output parser', () => {
   it('returns one query failing and one passing', async () => {
     // Arrange
     const expected = testStrings.one_query_failing_one_passing;
-    const xmlFile = xmlFiles.xmlfileWithOneFalseAndOneTrueQuery;
+    const xmlFile = fs.readFileSync(
+      xmlFiles.xmlfileWithOneFalseAndOneTrueQuery,
+      'utf8',
+    );
 
     // Act
-    const actual = environment.execute(xmlFile);
+    //const actual = environment.execute(xmlFile);
+    const actual = await (await environment.execute(xmlFile)).verifierOutput;
 
     //Assert
     expect(actual).toBe(expected);
@@ -52,10 +50,11 @@ describe('verifyta output parser', () => {
   it('returns syntax error', async () => {
     // Arrange
     const expected = testStrings.one_syntax_error;
-    const xmlFile = xmlFiles.xmlFileWithSyntaxErrors;
+    const xmlFile = fs.readFileSync(xmlFiles.xmlFileWithSyntaxErrors, 'utf8');
 
     // Act
-    const actual = environment.execute(xmlFile);
+    //const actual = environment.execute(xmlFile);
+    const actual = await (await environment.execute(xmlFile)).verifierError;
 
     //Assert
     expect(actual).toBe(expected);
@@ -64,10 +63,14 @@ describe('verifyta output parser', () => {
   it('returns no syntax error', async () => {
     // Arrange
     const expected = testStrings.no_syntax_error;
-    const xmlFile = xmlFiles.xmlFileWithoutSyntaxErrors;
+    const xmlFile = fs.readFileSync(
+      xmlFiles.xmlFileWithoutSyntaxErrors,
+      'utf8',
+    );
 
     // Act
-    const actual = environment.execute(xmlFile);
+    //const actual = environment.execute(xmlFile);
+    const actual = await (await environment.execute(xmlFile)).verifierOutput;
 
     //Assert
     expect(actual).toBe(expected);
