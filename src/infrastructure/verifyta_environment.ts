@@ -27,14 +27,14 @@ export class VerifytaEnvironment {
 
   async execute(xmlFileString: string): Promise<ICmdResult> {
     const filepath = this.tempSaveFile(xmlFileString);
-    const command = `C:\\Users\\ax111\\Desktop\\uppaal64-4.1.26-1\\bin-Windows\\verifyta.exe -u ${filepath}`;
+    const command = `C:\\Users\\freja\\OneDrive\\Dokumenter\\AAU\\"6. semester"\\MTPCS\\uppaal64-4.1.26\\bin-Windows\\verifyta.exe -u ${filepath}`;
 
     // super ugly, basically call verifyta, return result as ICmdResult
     // and delete the temporary file that was created
     const result: Promise<ICmdResult> = new Promise((resolve, reject) => {
       exec(command, { shell: 'cmd.exe' }, (error, stdout, stderr) => {
         if (error) {
-          reject({
+          resolve({
             verifierOutput: stdout,
             verifierError: stderr,
             cmdError: error,
