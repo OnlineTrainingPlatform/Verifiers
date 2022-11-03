@@ -1,8 +1,8 @@
 // Syntax errors
 export const xmlFileWithSyntaxErrors =
-  './src/test_files/lightswitch_noSyntaxError.xml';
+  './src/test_files/lightswitch_SyntaxError.xml';
 export const xmlFileWithoutSyntaxErrors =
-  './src/test_files/lightswitch_syntaxError.xml';
+  './src/test_files/lightswitch_noSyntaxError.xml';
 
 // Queries
 export const xmlfileWithTwoTrueQueries =
