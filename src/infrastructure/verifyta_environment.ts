@@ -6,11 +6,52 @@ import * as fs from 'fs';
 import { resolve } from 'path';
 
 export class VerifytaEnvironment {
-  private readonly _result?: VerifytaResult;
+  /**
+   * Runs verifyta on an xmlfile as string. Returns output of verifyta as ICmdResult.
+   * @date 2022-11-04
+   * @param xmlFileString
+   * The xml file as a string
+   * @returns Promise\<ICmdResult\>
+   */
+  async execute(xmlFileString: string): Promise<ICmdResult> {
+    const filepath = this.tempSaveFile(xmlFileString);
+${__dirname}infrastructure\\
+    console.log(`COMMAND ${command}`);    const command = `${__dirname}\\verifyta_bin\\verifyta.exe`;
+    console.log(command);
 
+    // Call verifyta, return result as ICmdResult
+    // and delete the temporary file that was created
+    const result: Promise<ICmdResult> = new Promise((resolve, _) => {
+      exec(command, { shell: 'cmd.exe' }, (error, stdout, stderr) => {
+        resolve({
+          verifierOutput: stdout,
+          verifierError: stderr,
+          cmdError: error,
+        });
+      });
+    }).then((res) => {
+      fs.unlinkSync(filepath); // Delete temp file
+      return res;
+    }) as Promise<ICmdResult>;
+
+    return result;
+  }
+
+  /**
+   * Create a temporary file for the xml string, as verifyta
+   * takes the filepath to the xml file. Temporary file will be
+   * deleted in execute function.
+   * @date 2022-11-04
+   * @param contents:string
+   * An xml file as a string
+   * @returns string
+   */
   tempSaveFile(contents: string): string {
+    // Create unique name for the xmlfile
     const hashedFilename =
       crypto.createHash('md5').update(contents).digest('hex') + '.xml';
+
+    // Save temerary file
     const filepath = `${__dirname}\\currentRequestXml\\${hashedFilename}`;
     fs.writeFileSync(filepath, contents, {
       flag: 'w+',
@@ -18,127 +59,142 @@ export class VerifytaEnvironment {
 
     return filepath;
   }
-
-  async readFile(filepath: string) {
-    const xmlContents = fs.readFileSync(filepath);
-
-    return xmlContents;
-  }
-
-  async execute(xmlFileString: string): Promise<ICmdResult> {
-    const filepath = this.tempSaveFile(xmlFileString);
-    const command = `C:\\Users\\freja\\OneDrive\\Dokumenter\\AAU\\"6. semester"\\MTPCS\\uppaal64-4.1.26\\bin-Windows\\verifyta.exe -u ${filepath}`;
-
-    // super ugly, basically call verifyta, return result as ICmdResult
-    // and delete the temporary file that was created
-    const result: Promise<ICmdResult> = new Promise((resolve, reject) => {
-      exec(command, { shell: 'cmd.exe' }, (error, stdout, stderr) => {
-        if (error) {
-          resolve({
-            verifierOutput: stdout,
-            verifierError: stderr,
-            cmdError: error,
-          });
-          return;
-        }
-        resolve({
-          verifierOutput: stdout,
-          verifierError: stderr,
-          cmdError: undefined,
-        });
-      });
-    }).then((res) => {
-      fs.unlinkSync(filepath); // delete temp file
-      return res;
-    }) as Promise<ICmdResult>;
-
-    return result;
-  }
 }
 
 const str = `<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
 <nta>
 	<declaration>// Place global declarations here.
-clock x, y;</declaration>
+clock t;
+broadcast chan tik;
+bool press=0;
+</declaration>
 	<template>
-		<name x="5" y="5">Proc</name>
-		<declaration>// Place local declarations here.</declaration>
-		<location id="id0" x="-170" y="34">
-			<name x="-180" y="0">A</name>
-			<label kind="invariant" x="-180" y="51">x&lt;=5</label>
-		</location>
-		<location id="id1" x="-34" y="34">
-			<name x="-44" y="0">B</name>
-			<label kind="invariant" x="-44" y="51">x&lt;=7</label>
-		</location>
-		<location id="id2" x="102" y="34">
-			<name x="92" y="0">C</name>
-			<label kind="invariant" x="92" y="51">x&lt;=8</label>
-		</location>
-		<location id="id3" x="204" y="-34">
-			<name x="194" y="-68">D</name>
-		</location>
-		<location id="id4" x="238" y="34">
-			<name x="228" y="0">E</name>
-		</location>
-		<location id="id5" x="204" y="102">
-			<name x="194" y="68">F</name>
+		<name x="5" y="5">Cround</name>
+		<declaration>// Place local declarations here.
+</declaration>
+		<location id="id0" x="0" y="0">
+			<label kind="invariant" x="-51" y="17">t &lt;= 1000</label>
 		</location>
 		<init ref="id0"/>
 		<transition>
-			<source ref="id2"/>
-			<target ref="id5"/>
-			<label kind="guard" x="136" y="76">x==7</label>
+			<source ref="id0"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-34" y="-144">t &gt;= 1000</label>
+			<label kind="synchronisation" x="-17" y="-127">tik!</label>
+			<label kind="assignment" x="-25" y="-102">t = 0</label>
+			<nail x="-51" y="-102"/>
+			<nail x="42" y="-102"/>
 		</transition>
+	</template>
+	<template>
+		<name>User</name>
+		<location id="id1" x="0" y="0">
+		</location>
+		<init ref="id1"/>
 		<transition>
-			<source ref="id2"/>
-			<target ref="id4"/>
-			<label kind="guard" x="153" y="8">x&lt;=4</label>
-		</transition>
-		<transition>
-			<source ref="id2"/>
-			<target ref="id3"/>
-			<label kind="guard" x="136" y="-34">y&gt;=6</label>
+			<source ref="id1"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-17" y="51">tik?</label>
+			<label kind="assignment" x="-34" y="76">press = 0</label>
+			<nail x="-59" y="76"/>
+			<nail x="51" y="76"/>
 		</transition>
 		<transition>
 			<source ref="id1"/>
-			<target ref="id2"/>
-			<label kind="guard" x="-8" y="8">y&gt;=4</label>
-			<label kind="assignment" x="59" y="34">y=0</label>
-		</transition>
-		<transition>
-			<source ref="id0"/>
 			<target ref="id1"/>
-			<label kind="guard" x="-153" y="8">x&gt;=3</label>
+			<label kind="synchronisation" x="-17" y="-119">tik?</label>
+			<label kind="assignment" x="-33" y="-93">press = 1</label>
+			<nail x="-51" y="-93"/>
+			<nail x="51" y="-93"/>
 		</transition>
 	</template>
-	<system>system Proc;
+	<template>
+		<name>User3</name>
+		<declaration>int count=0;</declaration>
+		<location id="id2" x="-68" y="-8">
+		</location>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-102" y="110">count &gt;= 3</label>
+			<label kind="synchronisation" x="-76" y="102">tik?</label>
+			<label kind="assignment" x="-93" y="127">press := 1,
+count := 0</label>
+			<nail x="-102" y="102"/>
+			<nail x="-25" y="102"/>
+			<nail x="-59" y="8"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-93" y="-170">count &lt; 3</label>
+			<label kind="synchronisation" x="-93" y="-187">tik?</label>
+			<label kind="assignment" x="-93" y="-153">count := count + 1,
+press := 0</label>
+			<nail x="-102" y="-101"/>
+			<nail x="-25" y="-101"/>
+		</transition>
+	</template>
+	<template>
+		<name>Switch</name>
+		<declaration>int x=0;</declaration>
+		<location id="id3" x="-425" y="-93">
+			<name x="-433" y="-76">off</name>
+		</location>
+		<location id="id4" x="-178" y="-93">
+			<name x="-187" y="-76">on</name>
+		</location>
+		<init ref="id3"/>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id4"/>
+			<label kind="guard" x="-238" y="-238">press == 0 &amp;&amp; x &lt; 10</label>
+			<label kind="synchronisation" x="-187" y="-255">tik?</label>
+			<label kind="assignment" x="-204" y="-221">x = x + 1</label>
+			<nail x="-204" y="-187"/>
+			<nail x="-144" y="-187"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id3"/>
+			<label kind="guard" x="-467" y="-212">press == 0</label>
+			<label kind="synchronisation" x="-449" y="-195">tik?</label>
+			<nail x="-467" y="-178"/>
+			<nail x="-391" y="-178"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id3"/>
+			<label kind="guard" x="-365" y="-59">press == 1 || x &gt;= 10</label>
+			<label kind="synchronisation" x="-306" y="-42">tik?</label>
+			<label kind="assignment" x="-314" y="-76">x := 0</label>
+			<nail x="-297" y="-76"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id4"/>
+			<label kind="guard" x="-340" y="-153">press == 1</label>
+			<label kind="synchronisation" x="-407" y="-127">tik?</label>
+			<nail x="-297" y="-127"/>
+		</transition>
+	</template>
+	<system>system Cround, User3, Switch;
     </system>
 	<queries>
 		<query>
-			<formula>E&lt;&gt; Proc.F</formula>
+			<formula>A[] deadlock</formula>
 			<comment></comment>
 		</query>
 		<query>
-			<formula>E&lt;&gt; Proc.E</formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula>E&lt;&gt; Proc.D</formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula></formula>
+			<formula>A[] Switch.x &lt; 3</formula>
 			<comment></comment>
 		</query>
 	</queries>
-</nta>
-`;
+</nta>`;
 
 const env = new VerifytaEnvironment();
-//const f = env.tempSaveFile('<name x="5" y="5">Proc</name>');
-
 const data = env
   .execute(str)
   .then((value) =>
@@ -156,6 +212,8 @@ const data = env
         error.verifierOutput,
     ),
   );
+
+// C:\\Users\\freja\\OneDrive\\Dokumenter\\AAU\\"6. semester"\\MTPCS\\uppaal64-4.1.26\\bin-Windows\\verifyta.exe -u C:\\Users\\freja\\Desktop\\Verifiers\\src\\test_files\\lightswitch_syntaxError.xml
 
 //console.log(fs.readFileSync('/test_file.xml', 'utf8')); // World!
 

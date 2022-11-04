@@ -1,9 +1,6 @@
-import * as testStrings from '../../test_files/test_verifyta_output_strings';
 import { VerifytaEnvironment } from '../verifyta_environment';
 import * as xmlFiles from '../../test_files/xml_example_files';
-import { ICmdResult } from '../i_cmd_result';
 import * as fs from 'fs';
-import { stringify } from 'querystring';
 
 describe('verifyta output parser', () => {
   const environment = new VerifytaEnvironment();
