@@ -4,6 +4,8 @@ import { ICmdResult } from './i_cmd_result';
 import crypto from 'crypto';
 import * as fs from 'fs';
 import { resolve } from 'path';
+import dotenv from 'dotenv';
+import * as env from '../environment';
 
 export class VerifytaEnvironment {
   /**
@@ -15,9 +17,10 @@ export class VerifytaEnvironment {
    */
   async execute(xmlFileString: string): Promise<ICmdResult> {
     const filepath = this.tempSaveFile(xmlFileString);
-${__dirname}infrastructure\\
-    console.log(`COMMAND ${command}`);    const command = `${__dirname}\\verifyta_bin\\verifyta.exe`;
-    console.log(command);
+
+    const command = `${env.VERIFYTA_PATH} -u ${filepath}`;
+
+    console.log(`COMMAND ${command}`);
 
     // Call verifyta, return result as ICmdResult
     // and delete the temporary file that was created
@@ -194,8 +197,8 @@ press := 0</label>
 	</queries>
 </nta>`;
 
-const env = new VerifytaEnvironment();
-const data = env
+const verifyta_env = new VerifytaEnvironment();
+const data = verifyta_env
   .execute(str)
   .then((value) =>
     console.log(
