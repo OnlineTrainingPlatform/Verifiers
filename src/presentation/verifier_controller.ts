@@ -5,13 +5,17 @@ import {
   VerifytaOutputParser,
   VerifytaVerifier,
 } from '../infrastructure';
-import { QueryExtractor } from '../infrastructure/query_extractor';
 
 interface VerifyRequest {
   solution: string;
-  queries: object[]; // Map<string, string>;
+  queries: object[];
 }
 
+/**
+ * converts the queries as object array to array of strings
+ * @param queries queries as object array ie.: [{query_1: 'E<> Proc.F'}, ...]
+ * @returns the query from each object ie.: ['E<> Proc.F', ...]
+ */
 function parseQueries(queries: object[]) {
   const arr: string[] = [];
   for (const obj of queries) {
