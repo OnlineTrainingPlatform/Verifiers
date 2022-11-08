@@ -27,7 +27,7 @@ describe('verifyta output parser', () => {
     const actual = parser.parse(cmdOutput, queries);
 
     //Assert
-    expect(actual).toBe(expected);
+    expect(actual).toStrictEqual(expected);
   });
 
   it('output from verifyta with no syntax errors and no queries', async () => {
@@ -38,7 +38,7 @@ describe('verifyta output parser', () => {
       verifierError: '',
       cmdError: undefined,
     };
-    const queries = [];
+    const queries: string[] = [];
     const queriesPassed = new Map<string, boolean>();
 
     const expected = new VerifytaResult(queriesPassed, false);
@@ -47,7 +47,7 @@ describe('verifyta output parser', () => {
     const actual = parser.parse(cmdOutput, queries);
 
     //Assert
-    expect(actual).toBe(expected);
+    expect(actual).toStrictEqual(expected);
   });
 
   it('output from verifyta with one syntax error', async () => {
@@ -58,7 +58,7 @@ describe('verifyta output parser', () => {
       verifierError: verifytaOutput,
       cmdError: verifytaOutput,
     };
-    const queries = [];
+    const queries: string[] = [];
     const queriesPassed = new Map<string, boolean>();
 
     const expected = new VerifytaResult(queriesPassed, true);
@@ -67,7 +67,7 @@ describe('verifyta output parser', () => {
     const actual = parser.parse(cmdOutput, queries);
 
     //Assert
-    expect(actual).toBe(expected);
+    expect(actual).toStrictEqual(expected);
   });
 
   it('output from verifyta with one query failing and one passing', async () => {
@@ -91,6 +91,6 @@ describe('verifyta output parser', () => {
     const actual = parser.parse(cmdOutput, queries);
 
     //Assert
-    expect(actual).toBe(expected);
+    expect(actual).toStrictEqual(expected);
   });
 });

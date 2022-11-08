@@ -1,21 +1,21 @@
 import { IQueryResult } from './i_query_result';
 import { ICmdResult } from './i_cmd_result';
+import { VerifytaResult } from './verifyta_result';
 
 export class VerifytaOutputParser {
-  private _output: string;
-
-  constructor() {
-    this._output = '';
-  }
-
+  /**
+   * Parses the ICmdResult created by the VerifytaEnvironments Execute function.
+   * Will create an IQueryResult based on the queries passed, or failed and with
+   * there are syntax errors.
+   * @param verifytaOuput the output from VerifytaEnvironments execute
+   * @param queries An array of the names of each query run
+   * @returns the parsed result as an IQueryResult
+   */
   parse(verifytaOuput: ICmdResult, queries: Array<string>): IQueryResult {
     //If there is a syntax error
     if (verifytaOuput.cmdError) {
       //TODO: check if we could use verifyta error instead!
-      return {
-        hasSyntaxErrors: true,
-        passedQueriesResults: this.createMapAllFalse(queries),
-      };
+      return new VerifytaResult(this.createMapAllFalse(queries), true);
     }
 
     //Check queries
@@ -33,11 +33,15 @@ export class VerifytaOutputParser {
         queryNumber++;
       }
     }
-
-    return { hasSyntaxErrors: false, passedQueriesResults: queryMap };
+    return new VerifytaResult(queryMap, false);
   }
 
-  createMapAllFalse(queries: Array<string>): Map<string, boolean> {
+  /**
+   * Creates a map from an array of queries, and mapping each query to false.
+   * @param queries to create the map with
+   * @returns a map, mapping each query to boolean false
+   */
+  private createMapAllFalse(queries: Array<string>): Map<string, boolean> {
     const map = new Map<string, boolean>();
     queries.forEach((query) => {
       map.set(query, false);
