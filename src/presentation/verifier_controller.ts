@@ -7,6 +7,11 @@ import {
 } from '../infrastructure';
 import { QueryExtractor } from '../infrastructure/query_extractor';
 
+interface VerifyRequest {
+  solution: string;
+  queries: Map<string, string>;
+}
+
 export async function verifierController(
   fastify: FastifyInstance,
   opts: any,
@@ -19,10 +24,13 @@ export async function verifierController(
         new VerifytaEnvironment(),
       );
       const user = new User(verifier);
-      const xml_input: string = request.body as string;
-      const queries = new QueryExtractor().extract(xml_input);
+      // const xml_input: string = request.body as string;
+      const body = request.body as VerifyRequest;
+      const xmlInput = body.solution;
+      const queries = Array.from(body.queries.values());
+      // const queries = new QueryExtractor().extract(xml_input);
       const response = await user.verifySolution({
-        xmlFile: xml_input,
+        xmlFile: xmlInput,
         queries: queries,
       });
       reply.send(response);
