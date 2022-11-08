@@ -9,7 +9,15 @@ import { QueryExtractor } from '../infrastructure/query_extractor';
 
 interface VerifyRequest {
   solution: string;
-  queries: Map<string, string>;
+  queries: object[]; // Map<string, string>;
+}
+
+function parseQueries(queries: object[]) {
+  const arr: string[] = [];
+  for (const obj of queries) {
+    arr.push(Object.values(obj)[0] as string);
+  }
+  return arr;
 }
 
 export async function verifierController(
@@ -24,15 +32,19 @@ export async function verifierController(
         new VerifytaEnvironment(),
       );
       const user = new User(verifier);
-      // const xml_input: string = request.body as string;
       const body = request.body as VerifyRequest;
       const xmlInput = body.solution;
-      const queries = Array.from(body.queries.values());
-      // const queries = new QueryExtractor().extract(xml_input);
-      const response = await user.verifySolution({
+      const queries = parseQueries(body.queries);
+
+      const result = await user.verifySolution({
         xmlFile: xmlInput,
         queries: queries,
       });
+
+      const response = {
+        queryResults: Object.fromEntries(result.result.passedQueriesResults),
+        hasSyntaxError: result.result.hasSyntaxErrors,
+      };
       reply.send(response);
     },
   );
