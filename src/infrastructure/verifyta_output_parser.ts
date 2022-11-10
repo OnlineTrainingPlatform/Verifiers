@@ -21,7 +21,7 @@ export class VerifytaOutputParser {
     //If there is an xml error
     //VerifierOutput will only be non-empty if there is an error
     if (verifytaOuput.verifierOutput == '') {
-      return new Error()
+      return new Error();
     }
 
     //Check queries
