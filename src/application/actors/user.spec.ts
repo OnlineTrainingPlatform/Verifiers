@@ -15,7 +15,7 @@ describe('Verifyta result', () => {
   );
   const user = new User(verifier);
 
-  it('hasSyntaxErrors=true when given an XML with syntax errors', async () => {
+  it('hasSyntaxError=true when given an XML with syntax errors', async () => {
     // Arrange
     const xml_input = fs.readFileSync(xmlFiles.xmlFileWithSyntaxErrors, 'utf8');
 
@@ -26,10 +26,10 @@ describe('Verifyta result', () => {
     });
 
     //Assert
-    expect(response.result.hasSyntaxErrors).toBe(true);
+    expect(response.result.hasSyntaxError).toBe(true);
   });
 
-  it('hasSyntaxErrors=false when given an XML without syntax errors', async () => {
+  it('hasSyntaxError=false when given an XML without syntax errors', async () => {
     // Arrange
     const xml_input = fs.readFileSync(
       xmlFiles.xmlFileWithoutSyntaxErrors,
@@ -43,7 +43,7 @@ describe('Verifyta result', () => {
     });
 
     // Assert
-    expect(response.result.hasSyntaxErrors).toBe(false);
+    expect(response.result.hasSyntaxError).toBe(false);
   });
 
   it('shows two queries passing when given an XML with two queries passing', async () => {

@@ -54,6 +54,12 @@ export const no_syntax_error = `Options for the verification:
 export const one_syntax_error = `C:\\Users\\freja\\Desktop\\Verifiers\\src\\test_files\\lightswitch_syntaxError.xml:/nta/template[4]/transition[4]/label[1]:1: [error] syntax error: unexpected T_ID, expecting ':'.
 synax error`;
 
+export const invalid_xml_error = `file:/C:/Users/freja/Desktop/P7/Verifiers/src/infrastructure/currentRequestXml/ba33212c2c9803a995cfeb2a348ab37a.xml:8: parser error : Opening and ending tag mismatch: declaration line 4 and declarationvfkjlis·
+</declarationvfkjlis>·
+                     ^·
+EXCEPTION: Unexpected end of XML document.·
+"`;
+
 export const one_query_failing_one_passing = `Options for the verification:
 Generating no trace
 Search order is breadth first

@@ -1,5 +1,5 @@
 export interface IQueryResult {
-  hasSyntaxErrors: boolean;
-  hasXmlErrors: boolean;
+  hasSyntaxError: boolean;
+  hasParserError: boolean;
   passedQueriesResults: Map<string, boolean>;
 }

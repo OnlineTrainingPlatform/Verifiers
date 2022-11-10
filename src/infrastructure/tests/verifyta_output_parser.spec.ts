@@ -21,7 +21,7 @@ describe('verifyta output parser', () => {
       ['query_2', true],
     ]);
 
-    const expected = new VerifytaResult(queriesPassed, false);
+    const expected = new VerifytaResult(queriesPassed, false, false);
 
     // Act
     const actual = parser.parse(cmdOutput, queries);
@@ -41,7 +41,7 @@ describe('verifyta output parser', () => {
     const queries: string[] = [];
     const queriesPassed = new Map<string, boolean>();
 
-    const expected = new VerifytaResult(queriesPassed, false);
+    const expected = new VerifytaResult(queriesPassed, false, false);
 
     // Act
     const actual = parser.parse(cmdOutput, queries);
@@ -61,7 +61,7 @@ describe('verifyta output parser', () => {
     const queries: string[] = [];
     const queriesPassed = new Map<string, boolean>();
 
-    const expected = new VerifytaResult(queriesPassed, true);
+    const expected = new VerifytaResult(queriesPassed, true, false);
 
     // Act
     const actual = parser.parse(cmdOutput, queries);
@@ -85,7 +85,7 @@ describe('verifyta output parser', () => {
       ['query_2', true],
     ]);
 
-    const expected = new VerifytaResult(queriesPassed, false);
+    const expected = new VerifytaResult(queriesPassed, false, false);
 
     // Act
     const actual = parser.parse(cmdOutput, queries);

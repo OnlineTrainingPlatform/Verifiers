@@ -13,15 +13,13 @@ export class VerifytaOutputParser {
    */
   parse(verifytaOuput: ICmdResult, queries: Array<string>): IQueryResult {
     //If there is a syntax error
-    //VerifierError will only be non-empty if there is an error
-    if (verifytaOuput.verifierError != '') {
+    if (verifytaOuput.verifierError.includes('syntax error')) {
       return new VerifytaResult(this.createMapAllFalse(queries), true, false);
     }
 
     //If there is an xml error
-    //VerifierOutput will only be non-empty if there is an error
-    if (verifytaOuput.verifierOutput == '') {
-      return new Error()
+    if (verifytaOuput.verifierError.includes('parser error')) {
+      return new VerifytaResult(this.createMapAllFalse(queries), false, true);
     }
 
     //Check queries
@@ -29,6 +27,7 @@ export class VerifytaOutputParser {
     const queryMap = new Map<string, boolean>();
     let queryNumber = 0;
 
+    //Go through entire output
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].includes('Verifying formula')) {
         if (lines[i + 1].includes('Formula is satisfied')) {
@@ -39,7 +38,7 @@ export class VerifytaOutputParser {
         queryNumber++;
       }
     }
-    return new VerifytaResult(queryMap, false);
+    return new VerifytaResult(queryMap, false, false);
   }
 
   /**
@@ -56,21 +55,3 @@ export class VerifytaOutputParser {
     return map;
   }
 }
-
-// import * as testStrings from '../test_files/test_verifyta_output_strings';
-// const verifytaOutput = testStrings.two_queries_passing;
-// const queries = ['query_1', 'query_2'];
-// const queriesPassed = new Map<string, boolean>([
-//   ['query_1', true],
-//   ['query_2', true],
-// ]);
-
-// const cmdRes = {
-//   verifierOutput: verifytaOutput,
-//   verifierError: '',
-//   cmdError: '',
-// };
-
-// const parser = new VerifytaOutputParser();
-// const parsed = parser.parse(cmdRes, queries);
-// console.log(parsed.passedQueriesResults);
