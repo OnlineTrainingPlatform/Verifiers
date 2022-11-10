@@ -13,7 +13,7 @@ ENV NODE_ENV $NODE_ENV
 
 # Copy package confs to builder and make a clean install
 COPY package*.json ./
-RUN npm ci -D && npm cache clean --force
+RUN npm i -D && npm cache clean --force
 
 # Copy src and tsconfig on seperate layers as src is highly volatile to changes
 COPY src/ ./src/
@@ -37,7 +37,7 @@ USER node
 COPY --from=builder /dist ./
 
 # Install production dependencies
-RUN npm ci && npm cache clean --force
+RUN npm i && npm cache clean --force
 
 # Port to expose which can be overwritten with docker-compose
 ARG PORT=8080
