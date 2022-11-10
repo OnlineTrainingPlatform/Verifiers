@@ -13,9 +13,15 @@ export class VerifytaOutputParser {
    */
   parse(verifytaOuput: ICmdResult, queries: Array<string>): IQueryResult {
     //If there is a syntax error
-    if (verifytaOuput.cmdError) {
-      //TODO: check if we could use verifyta error instead!
-      return new VerifytaResult(this.createMapAllFalse(queries), true);
+    //VerifierError will only be non-empty if there is an error
+    if (verifytaOuput.verifierError != '') {
+      return new VerifytaResult(this.createMapAllFalse(queries), true, false);
+    }
+
+    //If there is an xml error
+    //VerifierOutput will only be non-empty if there is an error
+    if (verifytaOuput.verifierOutput == '') {
+      return new Error()
     }
 
     //Check queries

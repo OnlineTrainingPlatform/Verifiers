@@ -140,4 +140,72 @@ describe('verifyta output parser', () => {
     //Assert
     expect(actual_string_index).toBe(expected_string_index);
   });
+
+  it('returns verifierOutput = "" when verifing an invalid xml', async () => {
+    //Arrange
+    const xmlFile = fs.readFileSync(xmlFiles.xmlFileInvalidXML, 'utf8');
+    const expected = '';
+
+    //Act
+    const actual = (await environment.execute(xmlFile)).verifierOutput;
+
+    //Assert
+    expect(actual).toBe(expected);
+  });
+
+  it('has verifierError with parser error when verifing an invalid xml', async () => {
+    //Arrange
+    const xmlFile = fs.readFileSync(xmlFiles.xmlFileInvalidXML, 'utf8');
+    const expected = true;
+
+    //Act
+    const verifierError = (await environment.execute(xmlFile)).verifierError;
+    const actual = verifierError.includes('parser error');
+
+    //Assert
+    expect(actual).toBe(expected);
+  });
+
+  it('has verifierError with syntax error when verifing an xml with syntax errors', async () => {
+    //Arrange
+    const xmlFile = fs.readFileSync(xmlFiles.xmlFileWithSyntaxErrors, 'utf8');
+    const expected = true;
+
+    //Act
+    const verifierError = (await environment.execute(xmlFile)).verifierError;
+    const actual = verifierError.includes('syntax error');
+
+    //Assert
+    expect(actual).toBe(expected);
+  });
+
+  it('returns verifierError = "" when verifing a valid xml', async () => {
+    //Arrange
+    const xmlFile = fs.readFileSync(
+      xmlFiles.xmlFileWithoutSyntaxErrors,
+      'utf8',
+    );
+    const expected = '';
+
+    //Act
+    const actual = (await environment.execute(xmlFile)).verifierError;
+
+    //Assert
+    expect(actual).toBe(expected);
+  });
+
+  it('returns cmdError = undefined when verifing a valid xml', async () => {
+    //Arrange
+    const xmlFile = fs.readFileSync(
+      xmlFiles.xmlFileWithoutSyntaxErrors,
+      'utf8',
+    );
+    const expected = undefined;
+
+    //Act
+    const actual = (await environment.execute(xmlFile)).cmdError;
+
+    //Assert
+    expect(actual).toBe(expected);
+  });
 });

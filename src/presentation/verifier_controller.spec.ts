@@ -65,6 +65,24 @@ describe('/verifier/verifyta', () => {
     expect(response.statusCode).toBe(expectedResponseCode);
   });
 
+  it('Returns status 404 if invalid verifier is requested', async () => {
+    // Arrange
+    const expectedResponseCode = 404;
+    const xmlFile = fs.readFileSync(xmlFiles.xmlfileWithTwoTrueQueries, 'utf8');
+
+    // Act
+    const response = await server.inject({
+      method: 'post',
+      url: `/verifiers/UPPAAL`,
+      payload: {
+        solution: xmlFile,
+      },
+    });
+
+    // Assert
+    expect(response.statusCode).toBe(expectedResponseCode);
+  });
+
   it('Returns status 200 if the request body contains a valid xml string', async () => {
     // Arrange
     const expectedResponseCode = 200;
