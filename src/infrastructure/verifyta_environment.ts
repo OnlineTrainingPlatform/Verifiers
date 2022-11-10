@@ -16,10 +16,9 @@ export class VerifytaEnvironment {
   async execute(xmlFileString: string): Promise<ICmdResult> {
     const filepath = this.tempSaveFile(xmlFileString);
 
-    const command = `${env.VERIFYTA_PATH} -u ${filepath}`;
+    const command = `${env.VERIFYTA_PATH} -u ${filepath}`; //TODO: mention env file in readme
 
-    // Call verifyta, return result as ICmdResult
-    // and delete the temporary file that was created
+    // Call verifyta, return result as ICmdResult and delete the temporary file that was created
     const result: Promise<ICmdResult> = new Promise((resolve, _) => {
       exec(command, { shell: env.SHELL }, (error, stdout, stderr) => {
         resolve({
