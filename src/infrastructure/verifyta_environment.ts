@@ -1,11 +1,9 @@
-import { VerifytaResult } from './verifyta_result';
 import { exec } from 'child_process';
 import { ICmdResult } from './i_cmd_result';
 import crypto from 'crypto';
 import * as fs from 'fs';
-import { resolve } from 'path';
-import dotenv from 'dotenv';
 import * as env from '../environment';
+import Os from 'os'
 
 export class VerifytaEnvironment {
   /**
@@ -23,7 +21,7 @@ export class VerifytaEnvironment {
     // Call verifyta, return result as ICmdResult
     // and delete the temporary file that was created
     const result: Promise<ICmdResult> = new Promise((resolve, _) => {
-      exec(command, { shell: 'cmd.exe' }, (error, stdout, stderr) => {
+      exec(command, { shell: env.SHELL }, (error, stdout, stderr) => {
         resolve({
           verifierOutput: stdout,
           verifierError: stderr,
@@ -33,6 +31,8 @@ export class VerifytaEnvironment {
     }).then((res) => {
       fs.unlinkSync(filepath); // Delete temp file
       return res;
+    }).catch((error) => {
+      Promise.reject(error);
     }) as Promise<ICmdResult>;
 
     return result;
@@ -53,7 +53,8 @@ export class VerifytaEnvironment {
       crypto.createHash('md5').update(contents).digest('hex') + '.xml';
 
     // Save temerary file
-    const filepath = `${__dirname}\\currentRequestXml\\${hashedFilename}`;
+    const seperator = Os.platform() === 'linux' ? '/' : '\\';
+    const filepath = `${__dirname}${seperator}currentRequestXml${seperator}${hashedFilename}`;
     if (!fs.existsSync(filepath)) {
       fs.writeFileSync(filepath, contents, {
         flag: 'w+',
