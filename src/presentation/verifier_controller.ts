@@ -29,15 +29,28 @@ export async function verifierController(
   opts: any,
 ): Promise<void> {
   fastify.post(
-    '/verifiers/verifyta',
+    '/verifiers/:verifier',
+
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const verifier = new VerifytaVerifier(
+      const { verifier } = request.params as { verifier: string };
+      if (verifier != 'verifyta') {
+        reply.code(404).send('Verifier not found.');
+        return;
+      }
+
+      const verifyta = new VerifytaVerifier(
         new VerifytaOutputParser(),
         new VerifytaEnvironment(),
       );
-      const user = new User(verifier);
+      const user = new User(verifyta);
       const body = request.body as VerifyRequest;
       const xmlInput = body.solution;
+
+      // if no xml in body, reply 400
+      if (xmlInput == null || xmlInput == '') {
+        reply.code(400).send('No xml string in solution field');
+      }
+
       const queries = parseQueries(body.queries);
 
       const result = await user.verifySolution({

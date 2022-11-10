@@ -4,6 +4,10 @@ export const xmlFileWithSyntaxErrors =
 export const xmlFileWithoutSyntaxErrors =
   './src/test_files/lightswitch_noSyntaxError.xml';
 
+// Other errors
+export const xmlFileInvalidXML =
+  './src/test_files/lightswitch_twoQueriesPassing_XML_ERROR.xml';
+
 // Queries
 export const xmlfileWithTwoTrueQueries =
   './src/test_files/lightswitch_twoQueriesPassing.xml';
