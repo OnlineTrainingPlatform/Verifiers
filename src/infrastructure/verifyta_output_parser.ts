@@ -14,12 +14,20 @@ export class VerifytaOutputParser {
   parse(verifytaOuput: ICmdResult, queries: Array<string>): IQueryResult {
     //If there is a syntax error
     if (verifytaOuput.verifierError.includes('syntax error')) {
-      return new VerifytaResult(this.createQueryMapAllFalse(queries), true, false);
+      return new VerifytaResult(
+        this.createQueryMapAllFalse(queries),
+        true,
+        false,
+      );
     }
 
     //If there is a parser error
     if (verifytaOuput.verifierError.includes('parser error')) {
-      return new VerifytaResult(this.createQueryMapAllFalse(queries), false, true);
+      return new VerifytaResult(
+        this.createQueryMapAllFalse(queries),
+        false,
+        true,
+      );
     }
 
     //Check queries

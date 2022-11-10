@@ -33,7 +33,7 @@ export async function verifierController(
 
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { verifier } = request.params as { verifier: string };
-      
+
       // If something other than verifyta is requested
       if (verifier != 'verifyta') {
         reply.code(404).send('Verifier not found.');
