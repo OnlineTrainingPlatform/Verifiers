@@ -22,7 +22,6 @@ export class VerifytaVerifier implements IQueryVerifier {
   ): Promise<IQueryResult> {
     const result = await this.environment.execute(xmlFile);
     const parsedResult = this.parser.parse(result, queries);
-    //console.log(parsedResult.passedQueriesResults);
 
     return parsedResult;
   }

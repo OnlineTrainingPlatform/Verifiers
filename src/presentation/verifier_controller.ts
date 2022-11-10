@@ -34,7 +34,7 @@ export async function verifierController(
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { verifier } = request.params as { verifier: string };
       
-      // if something other than verifyta is requested
+      // If something other than verifyta is requested
       if (verifier != 'verifyta') {
         reply.code(404).send('Verifier not found.');
         return;
@@ -48,7 +48,7 @@ export async function verifierController(
       const body = request.body as VerifyRequest;
       const xmlInput = body.solution;
 
-      // if no xml in body, reply 400
+      // If no xml in body, reply 400
       if (xmlInput == null || xmlInput == '') {
         reply.code(400).send('No xml string in solution field.');
       }
