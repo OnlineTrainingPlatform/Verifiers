@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import * as fs from 'fs';
 import * as env from '../environment';
 import Os from 'os'
+import { verifytaLinuxPath, verifytaWindowsPath } from './paths';
 
 export class VerifytaEnvironment {
   /**
@@ -16,11 +17,14 @@ export class VerifytaEnvironment {
   async execute(xmlFileString: string): Promise<ICmdResult> {
     const filepath = this.tempSaveFile(xmlFileString);
 
-    const command = `${env.VERIFYTA_PATH} -u ${filepath}`; //TODO: mention env file in readme
+    const verifytaPath = Os.platform() === 'linux' ? verifytaLinuxPath() : verifytaWindowsPath();
+    const command = `${verifytaPath} -u ${filepath}`;
+
+    const shell = Os.platform() === 'linux' ? undefined : 'CMD.exe';
 
     // Call verifyta, return result as ICmdResult and delete the temporary file that was created
     const result: Promise<ICmdResult> = new Promise((resolve, _) => {
-      exec(command, { shell: env.SHELL }, (error, stdout, stderr) => {
+      exec(command, { shell }, (error, stdout, stderr) => {
         resolve({
           verifierOutput: stdout,
           verifierError: stderr,
@@ -49,7 +53,7 @@ export class VerifytaEnvironment {
   tempSaveFile(contents: string): string {
     // Create unique name for the xmlfile
     const hashedFilename =
-      crypto.createHash('md5').update(contents).digest('hex') + '.xml';
+      crypto.createHash('md5').update(contents + String(Math.random())).digest('hex') + '.xml';
 
     // Save temerary file
     const seperator = Os.platform() === 'linux' ? '/' : '\\';
