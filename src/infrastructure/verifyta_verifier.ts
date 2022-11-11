@@ -1,5 +1,4 @@
 import { IQueryVerifier } from './i_query_verifier';
-import { VerifytaResult } from './verifyta_result';
 import { VerifytaOutputParser } from './verifyta_output_parser';
 import { VerifytaEnvironment } from './verifyta_environment';
 import { IQueryResult } from './i_query_result';

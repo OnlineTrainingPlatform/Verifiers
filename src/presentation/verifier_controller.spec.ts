@@ -1,7 +1,6 @@
 import { describe, expect } from '@jest/globals';
 import fastify from 'fastify';
 import { verifierController } from '.';
-import { IVerifySolutionReponse } from '../application/usecases/verify_solution';
 import * as xmlFiles from '../test_files/xml_example_files';
 import * as fs from 'fs';
 import { IQueryResult } from '../infrastructure/i_query_result';

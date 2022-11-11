@@ -35,7 +35,10 @@ export class VerifytaOutputParser {
     const queryMap = new Map<string, boolean>();
     let queryNumber = 0;
 
-    //Go through entire output
+    // Go through entire output
+    // if a line includes "verifying formula", the next line
+    // will tell if it was satisfied or not
+    // update query in map depending
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].includes('Verifying formula')) {
         if (lines[i + 1].includes('Formula is satisfied')) {

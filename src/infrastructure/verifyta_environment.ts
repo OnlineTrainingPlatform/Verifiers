@@ -1,10 +1,7 @@
-import { VerifytaResult } from './verifyta_result';
 import { exec } from 'child_process';
 import { ICmdResult } from './i_cmd_result';
 import crypto from 'crypto';
 import * as fs from 'fs';
-import { resolve } from 'path';
-import dotenv from 'dotenv';
 import * as env from '../environment';
 
 export class VerifytaEnvironment {
@@ -19,7 +16,7 @@ export class VerifytaEnvironment {
     const command = `${env.VERIFYTA_PATH} -u ${filepath}`; //TODO: mention env file in readme
 
     // Call verifyta, return result as ICmdResult and delete the temporary file that was created
-    const result: Promise<ICmdResult> = new Promise((resolve, _) => {
+    const result: Promise<ICmdResult> = new Promise((resolve) => {
       exec(command, { shell: 'cmd.exe' }, (error, stdout, stderr) => {
         resolve({
           verifierOutput: stdout,

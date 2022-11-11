@@ -12,7 +12,7 @@ interface VerifyRequest {
 }
 
 /**
- * converts the queries as object array to array of strings
+ * Converts the queries as object array to array of strings
  * @param queries queries as object array ie.: [{query_1: 'E<> Proc.F'}, ...]
  * @returns the query from each object ie.: ['E<> Proc.F', ...]
  */
@@ -24,10 +24,14 @@ function parseQueries(queries: object[]) {
   return arr;
 }
 
+/**
+ * The controller for the verifier.
+ * @param fastify fastify instance
+ */
 export async function verifierController(
   fastify: FastifyInstance,
-  opts: any,
 ): Promise<void> {
+  // Endpoint to verify uppaal solution using verifyta
   fastify.post(
     '/verifiers/:verifier',
 
@@ -55,15 +59,18 @@ export async function verifierController(
 
       const queries = parseQueries(body.queries);
 
-      const result = await user.verifySolution({
-        xmlFile: xmlInput,
-        queries: queries,
-      });
+      const result = (
+        await user.verifySolution({
+          xmlFile: xmlInput,
+          queries: queries,
+        })
+      ).result;
 
+      // construct response that corresponding to swagger doc
       const response = {
-        queryResults: Object.fromEntries(result.result.passedQueriesResults),
-        hasSyntaxError: result.result.hasSyntaxError,
-        hasParserError: result.result.hasParserError,
+        queryResults: Object.fromEntries(result.passedQueriesResults),
+        hasSyntaxError: result.hasSyntaxError,
+        hasParserError: result.hasParserError,
       };
       reply.send(response);
     },
