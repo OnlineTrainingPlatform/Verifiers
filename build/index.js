@@ -35,12 +35,16 @@ var envResult = dotenv.config();
 if (!envResult.error) {
     console.log("dotenv failed parsing the .env file ".concat(envResult.error));
 }
+if (process.env.API_PREFIX == undefined) {
+    console.log("Missing environment variable 'API_PREFIX'");
+    process.exit(1);
+}
 if (process.env.ROOT_PATH == undefined) {
     var defaultRootPath = (0, infrastructure_1.rootPath)();
     console.log("Missing environment variable 'ROOT_PATH' defaults to ".concat(defaultRootPath));
 }
 if (!process.env.PORT) {
-    var defaultPort = "8080";
+    var defaultPort = '8080';
     console.log("Missing environment variable 'PORT' defaults to ".concat(defaultPort));
     process.env.PORT = defaultPort;
 }
@@ -50,7 +54,9 @@ if (!process.env.HOST) {
     process.env.HOST = defaultHost;
 }
 var server = (0, fastify_1.default)();
-server.register(presentation_1.verifierController);
+server.register(presentation_1.verifierController, {
+    prefix: process.env.API_PREFIX,
+});
 server.listen({ port: Number(process.env.PORT), host: process.env.HOST }, function (err, address) {
     if (err) {
         console.error(err);

@@ -31,6 +31,9 @@ function parseQueries(queries: object[]) {
 export async function verifierController(
   fastify: FastifyInstance,
 ): Promise<void> {
+  fastify.get('/asd', async (request: FastifyRequest, reply: FastifyReply) => {
+    reply.status(200).send("OK")
+  }),
   // Endpoint to verify uppaal solution using verifyta
   fastify.post(
     '/verifiers/:verifier',

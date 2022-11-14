@@ -43,9 +43,11 @@ RUN npm i && npm cache clean --force
 ARG PORT=8080
 EXPOSE $PORT
 
+ARG STATUS_PATH=/api/v1/status
+
 # Setup healthcheck
 HEALTHCHECK --interval=10s --timeout=2s --start-period=15s \
-    CMD ["node", "/healthcheck.js"]
+    CMD ["PORT=$PORT", "STATUS_PATH=$STATUS_PATH", "node", "/healthcheck.js"]
 
 # Execute NodeJS (not NPM script) to handle SIGTERM and SIGINT signals.
 CMD ["node", "./build/index.js"]

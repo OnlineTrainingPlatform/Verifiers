@@ -9,6 +9,11 @@ if (!envResult.error) {
   console.log(`dotenv failed parsing the .env file ${envResult.error!}`);
 }
 
+if (process.env.API_PREFIX == undefined) {
+  console.log("Missing environment variable 'API_PREFIX'");
+  process.exit(1);
+}
+
 if (process.env.ROOT_PATH == undefined) {
   const defaultRootPath = rootPath();
   console.log(
@@ -29,7 +34,9 @@ if (!process.env.HOST) {
 }
 
 const server = fastify();
-server.register(verifierController);
+server.register(verifierController, {
+  prefix: process.env.API_PREFIX,
+});
 
 server.listen(
   { port: Number(process.env.PORT), host: process.env.HOST },
@@ -38,6 +45,7 @@ server.listen(
       console.error(err);
       process.exit(1);
     }
+    
     console.log(`Server listening at ${address}`);
   },
 );
