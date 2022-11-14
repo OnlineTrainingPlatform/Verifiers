@@ -18,6 +18,8 @@ RUN npm i -D && npm cache clean --force
 # Copy src and tsconfig on seperate layers as src is highly volatile to changes
 COPY src/ ./src/
 COPY tsconfig.json ./
+# COPY Verifyta into the build
+COPY verifyta/ ./verifyta/
 # runs rimraf and tsc dev devdependencies and requires tsconfig.json for tsc
 RUN npm run build
 
