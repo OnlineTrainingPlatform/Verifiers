@@ -1,11 +1,10 @@
 import path from "path";
-import { ROOT_PATH } from "../environment"
 
 export function rootPath(): string {
-    if (!ROOT_PATH) {
+    if (!process.env.ROOT_PATH) {
         return __dirname.substring(0, __dirname.lastIndexOf('/') - 1)
     }
-    return ROOT_PATH;
+    return process.env.ROOT_PATH;
 }
 
 export function verifytaLinuxPath(): string {
