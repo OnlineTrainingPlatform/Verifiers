@@ -5,10 +5,10 @@ import * as fs from 'fs';
 describe('verifyta output parser', () => {
   const environment = new VerifytaEnvironment();
 
-  it('returns two queries passing', async () => {
-    // Verificaiton on the CI takes too long
-    jest.setTimeout(1000*30);
+  // Verification takes too long on the CI
+  beforeAll(() => jest.setTimeout(90 * 1000))
 
+  it('returns two queries passing', async () => {
     //Arrange
     const expected_strings = [
       'Verifying formula 1 at /nta/queries/query[1]/formula',
@@ -37,9 +37,6 @@ describe('verifyta output parser', () => {
   });
 
   it('returns two queries failing', async () => {
-    // Verificaiton on the CI takes too long
-    jest.setTimeout(1000*30);
-
     //Arrange
     const expected_strings = [
       'Verifying formula 1 at /nta/queries/query[1]/formula',
