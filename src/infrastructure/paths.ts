@@ -1,9 +1,12 @@
+import Os from 'os';
 import path from 'path';
+
+const SLASH = Os.platform() === 'linux' ? '/' : '\\';
 
 export function rootPath(): string {
   if (!process.env.ROOT_PATH) {
-    const srcPath = __dirname.substring(0, __dirname.lastIndexOf('/'));
-    return srcPath.substring(0, srcPath.lastIndexOf('/'));
+    const srcPath = __dirname.substring(0, __dirname.lastIndexOf(SLASH));
+    return srcPath.substring(0, srcPath.lastIndexOf(SLASH));
   }
   return process.env.ROOT_PATH;
 }
