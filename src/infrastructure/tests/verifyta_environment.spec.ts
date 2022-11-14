@@ -5,9 +5,6 @@ import * as fs from 'fs';
 describe('verifyta output parser', () => {
   const environment = new VerifytaEnvironment();
 
-  // Verification takes too long on the CI
-  beforeAll(() => jest.setTimeout(90 * 1000))
-
   it('returns two queries passing', async () => {
     //Arrange
     const expected_strings = [
@@ -34,7 +31,7 @@ describe('verifyta output parser', () => {
 
     //Assert
     expect(actual_string_index).toBe(expected_string_index);
-  });
+  }, 1000 * 90);
 
   it('returns two queries failing', async () => {
     //Arrange
@@ -65,7 +62,7 @@ describe('verifyta output parser', () => {
 
     //Assert
     expect(actual_string_index).toBe(expected_string_index);
-  });
+  }, 1000 * 90);
 
   it('returns one query failing and one passing', async () => {
     //Arrange
