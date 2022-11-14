@@ -3,7 +3,7 @@ import { ICmdResult } from './i_cmd_result';
 import crypto from 'crypto';
 import * as fs from 'fs';
 import * as env from '../environment';
-import Os from 'os'
+import Os from 'os';
 import { verifytaLinuxPath, verifytaWindowsPath } from './paths';
 
 export class VerifytaEnvironment {
@@ -15,7 +15,8 @@ export class VerifytaEnvironment {
   async execute(xmlFileString: string): Promise<ICmdResult> {
     const filepath = this.tempSaveFile(xmlFileString);
 
-    const verifytaPath = Os.platform() === 'linux' ? verifytaLinuxPath() : verifytaWindowsPath();
+    const verifytaPath =
+      Os.platform() === 'linux' ? verifytaLinuxPath() : verifytaWindowsPath();
     const command = `${verifytaPath} -u ${filepath}`;
 
     const shell = Os.platform() === 'linux' ? undefined : 'CMD.exe';
@@ -29,12 +30,14 @@ export class VerifytaEnvironment {
           cmdError: error == null ? undefined : String(error),
         });
       });
-    }).then((res) => {
-      fs.unlinkSync(filepath); // Delete temp file
-      return res;
-    }).catch((error) => {
-      Promise.reject(error);
-    }) as Promise<ICmdResult>;
+    })
+      .then((res) => {
+        fs.unlinkSync(filepath); // Delete temp file
+        return res;
+      })
+      .catch((error) => {
+        Promise.reject(error);
+      }) as Promise<ICmdResult>;
 
     return result;
   }
@@ -51,7 +54,10 @@ export class VerifytaEnvironment {
   tempSaveFile(contents: string): string {
     // Create unique name for the xmlfile
     const hashedFilename =
-      crypto.createHash('md5').update(contents + Math.random()).digest('hex') + '.xml';
+      crypto
+        .createHash('md5')
+        .update(contents + Math.random())
+        .digest('hex') + '.xml';
 
     // Save temerary file
     const seperator = Os.platform() === 'linux' ? '/' : '\\';
