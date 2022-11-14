@@ -1,5 +1,4 @@
 import { IQueryVerifier } from './i_query_verifier';
-import { VerifytaResult } from './verifyta_result';
 import { VerifytaOutputParser } from './verifyta_output_parser';
 import { VerifytaEnvironment } from './verifyta_environment';
 import { IQueryResult } from './i_query_result';
@@ -22,7 +21,6 @@ export class VerifytaVerifier implements IQueryVerifier {
   ): Promise<IQueryResult> {
     const result = await this.environment.execute(xmlFile);
     const parsedResult = this.parser.parse(result, queries);
-    //console.log(parsedResult.passedQueriesResults);
 
     return parsedResult;
   }

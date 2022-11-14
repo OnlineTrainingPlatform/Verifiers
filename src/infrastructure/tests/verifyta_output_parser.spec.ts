@@ -70,6 +70,26 @@ describe('verifyta output parser', () => {
     expect(actual).toStrictEqual(expected);
   });
 
+  it('has hasParserError=true when verifyta output is from invalid xml', async () => {
+    // Arrange
+    const verifytaOutput = testStrings.invalid_xml_error;
+    const cmdOutput: ICmdResult = {
+      verifierOutput: '',
+      verifierError: verifytaOutput,
+      cmdError: verifytaOutput,
+    };
+    const queries: string[] = [];
+    const queriesPassed = new Map<string, boolean>();
+
+    const expected = new VerifytaResult(queriesPassed, false, true);
+
+    // Act
+    const actual = parser.parse(cmdOutput, queries);
+
+    //Assert
+    expect(actual).toStrictEqual(expected);
+  });
+
   it('output from verifyta with one query failing and one passing', async () => {
     // Arrange
     const verifytaOutput = testStrings.one_query_failing_one_passing;

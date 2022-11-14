@@ -9,10 +9,8 @@ import { verifytaLinuxPath, verifytaWindowsPath } from './paths';
 export class VerifytaEnvironment {
   /**
    * Runs verifyta on an xmlfile as string. Returns output of verifyta as ICmdResult.
-   * @date 2022-11-04
-   * @param xmlFileString
-   * The xml file as a string
-   * @returns Promise\<ICmdResult\>
+   * @param xmlFileString The xml file as a string
+   * @returns Promise of cmd result from verifyta
    */
   async execute(xmlFileString: string): Promise<ICmdResult> {
     const filepath = this.tempSaveFile(xmlFileString);

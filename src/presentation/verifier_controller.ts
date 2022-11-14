@@ -12,7 +12,7 @@ interface VerifyRequest {
 }
 
 /**
- * converts the queries as object array to array of strings
+ * Converts the queries as object array to array of strings
  * @param queries queries as object array ie.: [{query_1: 'E<> Proc.F'}, ...]
  * @returns the query from each object ie.: ['E<> Proc.F', ...]
  */
@@ -24,17 +24,21 @@ function parseQueries(queries: object[]) {
   return arr;
 }
 
+/**
+ * The controller for the verifier.
+ * @param fastify fastify instance
+ */
 export async function verifierController(
   fastify: FastifyInstance,
-  opts: any,
 ): Promise<void> {
+  // Endpoint to verify uppaal solution using verifyta
   fastify.post(
     '/verifiers/:verifier',
 
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { verifier } = request.params as { verifier: string };
 
-      // if something other than verifyta is requested
+      // If something other than verifyta is requested
       if (verifier != 'verifyta') {
         reply.code(404).send('Verifier not found.');
         return;
@@ -48,22 +52,25 @@ export async function verifierController(
       const body = request.body as VerifyRequest;
       const xmlInput = body.solution;
 
-      // if no xml in body, reply 400
+      // If no xml in body, reply 400
       if (xmlInput == null || xmlInput == '') {
         reply.code(400).send('No xml string in solution field.');
       }
 
       const queries = parseQueries(body.queries);
 
-      const result = await user.verifySolution({
-        xmlFile: xmlInput,
-        queries: queries,
-      });
+      const result = (
+        await user.verifySolution({
+          xmlFile: xmlInput,
+          queries: queries,
+        })
+      ).result;
 
+      // construct response that corresponding to swagger doc
       const response = {
-        queryResults: Object.fromEntries(result.result.passedQueriesResults),
-        hasSyntaxError: result.result.hasSyntaxError,
-        hasParserError: result.result.hasParserError,
+        queryResults: Object.fromEntries(result.passedQueriesResults),
+        hasSyntaxError: result.hasSyntaxError,
+        hasParserError: result.hasParserError,
       };
       reply.send(response);
     },

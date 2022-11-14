@@ -1,5 +1,8 @@
 import { IQueryResult } from './i_query_result';
 
+/**
+ * Result returned from VerifytaOutputParser
+ */
 export class VerifytaResult implements IQueryResult {
   private readonly _queriesPassedDict: Map<string, boolean>;
   private readonly _hasSyntaxError: boolean;
