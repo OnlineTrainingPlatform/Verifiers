@@ -53,7 +53,7 @@ export class VerifytaEnvironment {
   tempSaveFile(contents: string): string {
     // Create unique name for the xmlfile
     const hashedFilename =
-      crypto.createHash('md5').update(contents + String(Math.random())).digest('hex') + '.xml';
+      crypto.createHash('md5').update(contents + Math.random()).digest('hex') + '.xml';
 
     // Save temerary file
     const seperator = Os.platform() === 'linux' ? '/' : '\\';
