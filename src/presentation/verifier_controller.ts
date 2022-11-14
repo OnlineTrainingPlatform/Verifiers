@@ -31,48 +31,48 @@ function parseQueries(queries: object[]) {
 export async function verifierController(
   fastify: FastifyInstance,
 ): Promise<void> {
-    // Endpoint to verify uppaal solution using verifyta
-    fastify.post(
-      '/verifiers/:verifier',
+  // Endpoint to verify uppaal solution using verifyta
+  fastify.post(
+    '/verifiers/:verifier',
 
-      async (request: FastifyRequest, reply: FastifyReply) => {
-        const { verifier } = request.params as { verifier: string };
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { verifier } = request.params as { verifier: string };
 
-        // If something other than verifyta is requested
-        if (verifier != 'verifyta') {
-          reply.code(404).send('Verifier not found.');
-          return;
-        }
+      // If something other than verifyta is requested
+      if (verifier != 'verifyta') {
+        reply.code(404).send('Verifier not found.');
+        return;
+      }
 
-        const verifyta = new VerifytaVerifier(
-          new VerifytaOutputParser(),
-          new VerifytaEnvironment(),
-        );
-        const user = new User(verifyta);
-        const body = request.body as VerifyRequest;
-        const xmlInput = body.solution;
+      const verifyta = new VerifytaVerifier(
+        new VerifytaOutputParser(),
+        new VerifytaEnvironment(),
+      );
+      const user = new User(verifyta);
+      const body = request.body as VerifyRequest;
+      const xmlInput = body.solution;
 
-        // If no xml in body, reply 400
-        if (xmlInput == null || xmlInput == '') {
-          reply.code(400).send('No xml string in solution field.');
-        }
+      // If no xml in body, reply 400
+      if (xmlInput == null || xmlInput == '') {
+        reply.code(400).send('No xml string in solution field.');
+      }
 
-        const queries = parseQueries(body.queries);
+      const queries = parseQueries(body.queries);
 
-        const result = (
-          await user.verifySolution({
-            xmlFile: xmlInput,
-            queries: queries,
-          })
-        ).result;
+      const result = (
+        await user.verifySolution({
+          xmlFile: xmlInput,
+          queries: queries,
+        })
+      ).result;
 
-        // construct response that corresponding to swagger doc
-        const response = {
-          queryResults: Object.fromEntries(result.passedQueriesResults),
-          hasSyntaxError: result.hasSyntaxError,
-          hasParserError: result.hasParserError,
-        };
-        reply.send(response);
-      },
-    );
+      // construct response that corresponding to swagger doc
+      const response = {
+        queryResults: Object.fromEntries(result.passedQueriesResults),
+        hasSyntaxError: result.hasSyntaxError,
+        hasParserError: result.hasParserError,
+      };
+      reply.send(response);
+    },
+  );
 }
