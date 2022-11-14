@@ -29,18 +29,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fastify_1 = __importDefault(require("fastify"));
 var presentation_1 = require("./presentation");
 var dotenv = __importStar(require("dotenv"));
+var infrastructure_1 = require("./infrastructure");
 // Load the ".env" file from the root. Afterwards check all required environment bindings
 var envResult = dotenv.config();
 if (!envResult.error) {
     console.log("dotenv failed parsing the .env file ".concat(envResult.error));
 }
 if (process.env.ROOT_PATH == undefined) {
-    var defaultRootPath = __dirname.substring(0, __dirname.lastIndexOf('/') - 1);
-    console.log("Missing environment variable 'ROOT_PATH' defaults to " + defaultRootPath);
+    var defaultRootPath = (0, infrastructure_1.rootPath)();
+    console.log("Missing environment variable 'ROOT_PATH' defaults to ".concat(defaultRootPath));
+}
+if (!process.env.PORT) {
+    var defaultPort = "8080";
+    console.log("Missing environment variable 'PORT' defaults to ".concat(defaultPort));
+    process.env.PORT = defaultPort;
+}
+if (!process.env.HOST) {
+    var defaultHost = 'localhost';
+    console.log("Missing environment variable 'HOST' defaults to ".concat(defaultHost));
+    process.env.HOST = defaultHost;
 }
 var server = (0, fastify_1.default)();
 server.register(presentation_1.verifierController);
-server.listen({ port: 8081 }, function (err, address) {
+server.listen({ port: Number(process.env.PORT), host: process.env.HOST }, function (err, address) {
     if (err) {
         console.error(err);
         process.exit(1);

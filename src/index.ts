@@ -1,6 +1,7 @@
 import fastify from 'fastify';
 import { verifierController } from './presentation';
 import * as dotenv from 'dotenv';
+import { rootPath } from './infrastructure';
 
 // Load the ".env" file from the root. Afterwards check all required environment bindings
 const envResult = dotenv.config();
@@ -9,15 +10,26 @@ if (!envResult.error) {
 }
 
 if (process.env.ROOT_PATH == undefined) {
-  const defaultRootPath = __dirname.substring(0, __dirname.lastIndexOf('/') - 1)
-  console.log("Missing environment variable 'ROOT_PATH' defaults to " + defaultRootPath);
+  const defaultRootPath = rootPath();
+  console.log(`Missing environment variable 'ROOT_PATH' defaults to ${defaultRootPath}`);
 }
 
+if (!process.env.PORT) {
+  const defaultPort = "8080";
+  console.log(`Missing environment variable 'PORT' defaults to ${defaultPort}`);
+  process.env.PORT = defaultPort;
+}
+
+if (!process.env.HOST) {
+  const defaultHost = 'localhost'
+  console.log(`Missing environment variable 'HOST' defaults to ${defaultHost}`);
+  process.env.HOST = defaultHost;
+}
 
 const server = fastify();
 server.register(verifierController);
 
-server.listen({ port: 8081 }, (err, address) => {
+server.listen({ port: Number(process.env.PORT), host: process.env.HOST }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
