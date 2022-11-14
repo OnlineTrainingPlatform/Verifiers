@@ -6,7 +6,7 @@ describe('verifyta output parser', () => {
   const environment = new VerifytaEnvironment();
 
   // Verification takes too long on the CI
-  beforeAll(() => jest.setTimeout(90 * 1000))
+  beforeAll(() => jest.setTimeout(90 * 1000));
 
   it('returns two queries passing', async () => {
     //Arrange
