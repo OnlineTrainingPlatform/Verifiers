@@ -1,11 +1,11 @@
-import path from "path";
+import path from 'path';
 
 export function rootPath(): string {
-    if (!process.env.ROOT_PATH) {
-        const srcPath = __dirname.substring(0, __dirname.lastIndexOf('/'))
-        return srcPath.substring(0, srcPath.lastIndexOf('/'))
-    }
-    return process.env.ROOT_PATH;
+  if (!process.env.ROOT_PATH) {
+    const srcPath = __dirname.substring(0, __dirname.lastIndexOf('/'));
+    return srcPath.substring(0, srcPath.lastIndexOf('/'));
+  }
+  return process.env.ROOT_PATH;
 }
 
 export function verifytaLinuxPath(): string {

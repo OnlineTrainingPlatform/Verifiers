@@ -11,17 +11,19 @@ if (!envResult.error) {
 
 if (process.env.ROOT_PATH == undefined) {
   const defaultRootPath = rootPath();
-  console.log(`Missing environment variable 'ROOT_PATH' defaults to ${defaultRootPath}`);
+  console.log(
+    `Missing environment variable 'ROOT_PATH' defaults to ${defaultRootPath}`,
+  );
 }
 
 if (!process.env.PORT) {
-  const defaultPort = "8080";
+  const defaultPort = '8080';
   console.log(`Missing environment variable 'PORT' defaults to ${defaultPort}`);
   process.env.PORT = defaultPort;
 }
 
 if (!process.env.HOST) {
-  const defaultHost = 'localhost'
+  const defaultHost = 'localhost';
   console.log(`Missing environment variable 'HOST' defaults to ${defaultHost}`);
   process.env.HOST = defaultHost;
 }
@@ -29,10 +31,13 @@ if (!process.env.HOST) {
 const server = fastify();
 server.register(verifierController);
 
-server.listen({ port: Number(process.env.PORT), host: process.env.HOST }, (err, address) => {
-  if (err) {
-    console.error(err);
-    process.exit(1);
-  }
-  console.log(`Server listening at ${address}`);
-});
+server.listen(
+  { port: Number(process.env.PORT), host: process.env.HOST },
+  (err, address) => {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    console.log(`Server listening at ${address}`);
+  },
+);
