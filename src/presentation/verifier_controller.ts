@@ -75,8 +75,7 @@ export async function verifierController(
         };
 
         reply.code(200).send(response);
-
-      } catch(error) {
+      } catch (error) {
         reply.code(500).send(error);
       }
     },
