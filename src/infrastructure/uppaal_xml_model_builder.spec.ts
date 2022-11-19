@@ -179,8 +179,8 @@ describe('UppaalXmlModelBuilder', () => {
 
       // Act
       const actual = builder
-        .add_query_tag("A[] Switch.x")
-        .add_query_tag("A[] Switch.y")
+        .add_query_tag('A[] Switch.x')
+        .add_query_tag('A[] Switch.y')
         .build();
 
       // Assert
@@ -195,8 +195,8 @@ describe('UppaalXmlModelBuilder', () => {
 
       // Act
       const actual = builder
-        .add_query_tag("A[] Switch.x")
-        .add_query_tag("A[] Switch.y")
+        .add_query_tag('A[] Switch.x')
+        .add_query_tag('A[] Switch.y')
         .build();
 
       // Assert
@@ -204,7 +204,8 @@ describe('UppaalXmlModelBuilder', () => {
     });
     it('Should add two queries with "queries" tag', () => {
       // Arrange
-      const model = '<nta><queries><query><formula>A[] Switch.x</formula><comment></comment></query><query><formula>A[] Switch.y</formula><comment></comment></query></queries></nta>';
+      const model =
+        '<nta><queries><query><formula>A[] Switch.x</formula><comment></comment></query><query><formula>A[] Switch.y</formula><comment></comment></query></queries></nta>';
       const builder = new UppaalXmlModelBuilder(model);
       const expected =
         '<nta><queries><query><formula>A[] Switch.x</formula><comment></comment></query><query><formula>A[] Switch.y</formula><comment></comment></query></queries></nta>';
@@ -212,8 +213,8 @@ describe('UppaalXmlModelBuilder', () => {
       // Act
       const actual = builder
         .remove_all_query_tags()
-        .add_query_tag("A[] Switch.x")
-        .add_query_tag("A[] Switch.y")
+        .add_query_tag('A[] Switch.x')
+        .add_query_tag('A[] Switch.y')
         .build();
 
       // Assert
@@ -240,17 +241,17 @@ describe('UppaalXmlModelBuilder', () => {
           <queries>
  <query><formula>A[] Switch.x</formula><comment></comment></query><query><formula>A[] Switch.y</formula><comment></comment></query></queries>
       </nta>
-      `
+      `;
 
       // Act
       const actual = builder
         .remove_all_query_tags()
-        .add_query_tag("A[] Switch.x")
-        .add_query_tag("A[] Switch.y")
+        .add_query_tag('A[] Switch.x')
+        .add_query_tag('A[] Switch.y')
         .build();
 
       // Assert
       expect(actual).toEqual(expected);
-    })
+    });
   });
 });

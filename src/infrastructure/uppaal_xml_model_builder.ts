@@ -51,11 +51,11 @@ export class UppaalXmlModelBuilder {
     const end_index = queries_closing_tag_index - 1;
 
     // If the start idnex is either a "\n" or "\t" then add one to the index
-    const start_char = this.xml.charAt(start_index)
+    const start_char = this.xml.charAt(start_index);
     if (start_char === '\n' || start_char === '\t') {
-        start_index += 1;
+      start_index += 1;
     } else {
-        start_index -= 1;
+      start_index -= 1;
     }
 
     // Uses clise to "cut away" the "query" tags in "queries"
