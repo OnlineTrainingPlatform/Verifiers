@@ -1,11 +1,11 @@
 export class UppaalXmlModelBuilder {
   private xml: string;
   private readonly escap_map: { [mapping: string]: string } = {
+    '&': '&amp;',
     '>': '&gt;',
     '<': '&lt;',
     "'": '&apos;',
     '"': '&quot;',
-    '&': '&amp;',
   };
 
   constructor(xml: string) {
@@ -14,9 +14,11 @@ export class UppaalXmlModelBuilder {
   }
 
   private escape_xml(xml: string): string {
-    for (const mapping in this.escap_map) {
-      xml = xml.replace(mapping, this.escap_map[mapping]);
-    }
+    xml = xml.replace('&', '&amp;');
+    xml = xml.replace('>', '&gt;');
+    xml = xml.replace('<', '&lt;');
+    xml = xml.replace("'", '&apos;');
+    xml = xml.replace('"', '&quot;');
     return xml;
   }
 
@@ -44,9 +46,17 @@ export class UppaalXmlModelBuilder {
     const queries_closing_tag_index = this.xml.indexOf('</queries>');
 
     // Index of the first character after ">"
-    const start_index = queries_opening_tag_index + '<queries>'.length - 1;
+    let start_index = queries_opening_tag_index + '<queries>'.length;
     // The first character before "<"
     const end_index = queries_closing_tag_index - 1;
+
+    // If the start idnex is either a "\n" or "\t" then add one to the index
+    const start_char = this.xml.charAt(start_index)
+    if (start_char === '\n' || start_char === '\t') {
+        start_index += 1;
+    } else {
+        start_index -= 1;
+    }
 
     // Uses clise to "cut away" the "query" tags in "queries"
     const start_string = this.xml.slice(0, start_index);
