@@ -33,7 +33,7 @@ if (!process.env.HOST) {
   process.env.HOST = defaultHost;
 }
 
-const server = fastify();
+const server = fastify({ logger: true });
 server.register(verifierController, {
   prefix: process.env.API_PREFIX,
 });
