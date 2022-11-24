@@ -9,8 +9,8 @@ export class UppaalXmlModelBuilder {
   }
 
   /**
-   * When inserting at query in uppaal, it's necessary to escape certain characters, to adhere to xml conventions. 
-   * @param xml 
+   * When inserting at query in uppaal, it's necessary to escape certain characters, to adhere to xml conventions.
+   * @param xml
    * @returns the xml in correct uppaal format.
    */
   private escape_xml(xml: string): string {
@@ -24,7 +24,7 @@ export class UppaalXmlModelBuilder {
 
   /**
    * Function to check whether an xml file contains multiple queries.
-   * @returns 
+   * @returns
    */
   private has_queries(): boolean {
     return this.xml.includes('<queries>') && this.xml.includes('</queries>');
@@ -32,7 +32,7 @@ export class UppaalXmlModelBuilder {
 
   /**
    * Function to check whether an xml file contains at least a single query.
-   * @returns 
+   * @returns
    */
   private has_a_query(): boolean {
     return this.xml.includes('<query>');

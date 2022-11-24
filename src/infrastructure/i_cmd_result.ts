@@ -4,7 +4,7 @@
  * as it will only exist if the cmd throws an error (e.g. invalid xml or syntax error).
  */
 export interface ICmdResult {
-  verifierOutput: string; 
+  verifierOutput: string;
   verifierError: string;
   cmdError?: string;
 }
