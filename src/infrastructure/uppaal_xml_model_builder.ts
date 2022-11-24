@@ -2,19 +2,17 @@ import Os from 'os';
 
 export class UppaalXmlModelBuilder {
   private xml: string;
-  private readonly escap_map: { [mapping: string]: string } = {
-    '&': '&amp;',
-    '>': '&gt;',
-    '<': '&lt;',
-    "'": '&apos;',
-    '"': '&quot;',
-  };
 
   constructor(xml: string) {
-    // Copy the xml as the buildre creates a new xml file
+    // Copy the xml as the builder creates a new xml file.
     this.xml = xml;
   }
 
+  /**
+   * When inserting at query in uppaal, it's necessary to escape certain characters, to adhere to xml conventions. 
+   * @param xml 
+   * @returns the xml in correct uppaal format.
+   */
   private escape_xml(xml: string): string {
     xml = xml.replace('&', '&amp;');
     xml = xml.replace('>', '&gt;');
@@ -24,10 +22,18 @@ export class UppaalXmlModelBuilder {
     return xml;
   }
 
+  /**
+   * Function to check whether an xml file contains multiple queries.
+   * @returns 
+   */
   private has_queries(): boolean {
     return this.xml.includes('<queries>') && this.xml.includes('</queries>');
   }
 
+  /**
+   * Function to check whether an xml file contains at least a single query.
+   * @returns 
+   */
   private has_a_query(): boolean {
     return this.xml.includes('<query>');
   }
