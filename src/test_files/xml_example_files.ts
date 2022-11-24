@@ -1,4 +1,4 @@
-import { verifytaTestModelsPath } from '../infrastructure';
+import { verifytaTestModelsPath } from '../infrastructure/paths';
 
 // Syntax errors
 export const xmlFileWithSyntaxErrors = verifytaTestModelsPath(

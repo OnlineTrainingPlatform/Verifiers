@@ -1,5 +1,5 @@
 import { describe, expect } from '@jest/globals';
-import { UppaalXmlModelBuilder } from './uppaal_xml_model_builder';
+import { UppaalXmlModelBuilder } from '../uppaal_xml_model_builder';
 
 describe('UppaalXmlModelBuilder', () => {
   describe('remove_all_query_tags', () => {
@@ -237,9 +237,7 @@ describe('UppaalXmlModelBuilder', () => {
       `;
       const builder = new UppaalXmlModelBuilder(model);
       const expected = `
-        <nta>
-          <queries>
- <query><formula>A[] Switch.x</formula><comment></comment></query><query><formula>A[] Switch.y</formula><comment></comment></query></queries>
+        <nta><queries><query><formula>A[] Switch.x</formula><comment></comment></query><query><formula>A[] Switch.y</formula><comment></comment></query></queries>
       </nta>
       `;
 

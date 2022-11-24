@@ -3,7 +3,7 @@ import {
   verifytaLinuxPath,
   verifytaTestModelsPath,
   verifytaWindowsPath,
-} from './paths';
+} from '../paths';
 
 import Os from 'os';
 const SLASH = Os.platform() === 'linux' ? '/' : '\\';
