@@ -54,8 +54,24 @@ export class UppaalXmlModelBuilder {
 
     // If the start idnex is either a "\n" or "\t" then add one to the index
     const start_char = this.xml.charAt(start_index);
-    if (start_char === Os.EOL[0] || start_char === '\t') {
-      start_index += Os.EOL.length;
+    if (Os.platform() === 'linux') {
+      if (start_char === '\n' || start_char === '\t') {
+        start_index += 1;
+      } else {
+        start_index -= 1;
+      }
+    } else {
+      if (start_char === '\r') {
+        start_index += 2;
+      } else {
+        start_index -= 1;
+      }
+    }
+
+    if (start_char === '\t' || start_char === '\n') {
+      start_index += 1;
+    } else if (start_char === '\r') {
+      start_index += 2;
     } else {
       start_index -= 1;
     }
