@@ -59,20 +59,25 @@ export async function verifierController(
 
       const queries = parseQueries(body.queries);
 
-      const result = (
-        await user.verifySolution({
-          xmlFile: xmlInput,
-          queries: queries,
-        })
-      ).result;
+      try {
+        const result = (
+          await user.verifySolution({
+            xmlFile: xmlInput,
+            queries: queries,
+          })
+        ).result;
 
-      // construct response that corresponding to swagger doc
-      const response = {
-        queryResults: Object.fromEntries(result.passedQueriesResults),
-        hasSyntaxError: result.hasSyntaxError,
-        hasParserError: result.hasParserError,
-      };
-      reply.send(response);
+        // construct response that corresponding to swagger doc
+        const response = {
+          queryResults: Object.fromEntries(result.passedQueriesResults),
+          hasSyntaxError: result.hasSyntaxError,
+          hasParserError: result.hasParserError,
+        };
+
+        reply.code(200).send(response);
+      } catch (error) {
+        reply.code(500).send(error);
+      }
     },
   );
 }

@@ -18,6 +18,8 @@ RUN npm i -D && npm cache clean --force
 # Copy src and tsconfig on seperate layers as src is highly volatile to changes
 COPY src/ ./src/
 COPY tsconfig.json ./
+# COPY Verifyta into the build
+COPY verifyta/ ./verifyta/
 # runs rimraf and tsc dev devdependencies and requires tsconfig.json for tsc
 RUN npm run build
 
@@ -35,17 +37,20 @@ USER node
 
 # Copy the distribution files from the builder to the working directory
 COPY --from=builder /dist ./
+COPY healthcheck.js ./
 
 # Install production dependencies
 RUN npm i && npm cache clean --force
 
 # Port to expose which can be overwritten with docker-compose
-ARG PORT=8080
+ARG PORT=80
 EXPOSE $PORT
+
+ARG STATUS_PATH=/api/v1/status
 
 # Setup healthcheck
 HEALTHCHECK --interval=10s --timeout=2s --start-period=15s \
-    CMD ["node", "/healthcheck.js"]
+    CMD node /app/healthcheck.js
 
 # Execute NodeJS (not NPM script) to handle SIGTERM and SIGINT signals.
 CMD ["node", "./build/index.js"]

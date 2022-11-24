@@ -56,7 +56,7 @@ describe('Verifyta result', () => {
     // Act
     const response = await user.verifySolution({
       xmlFile: xml_input,
-      queries: ['query_1', 'query_2'],
+      queries: ['A[] Switch.x < 4', 'A[] Switch.x < 10'],
     });
 
     // Get values
@@ -82,7 +82,7 @@ describe('Verifyta result', () => {
     // Act
     const response = await user.verifySolution({
       xmlFile: xml_input,
-      queries: ['query_1', 'query_2'],
+      queries: ['A[] deadlock', 'A[] Switch.x < 3'],
     });
 
     // Get values
@@ -109,7 +109,7 @@ describe('Verifyta result', () => {
     // Act
     const response = await user.verifySolution({
       xmlFile: xml_input,
-      queries: ['query_1', 'query_2'],
+      queries: ['A[] deadlock', 'A[] not deadlock'],
     });
 
     // Get values
