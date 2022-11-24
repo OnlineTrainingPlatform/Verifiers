@@ -12,11 +12,11 @@ export function rootPath(): string {
 }
 
 export function verifytaLinuxPath(): string {
-  return path.join(rootPath(), 'verifyta', 'linux', 'verifyta');
+  return path.join(rootPath(), 'uppaal', 'bin-Linux', 'verifyta');
 }
 
 export function verifytaWindowsPath(): string {
-  return path.join(rootPath(), 'verifyta', 'windows', 'verifyta.exe');
+  return path.join(rootPath(), 'uppaal', 'bin-Windows', 'verifyta.exe');
 }
 
 export function verifytaTestModelsPath(
