@@ -1,3 +1,9 @@
+# environment file...
+environment.ts
+
+#Editor
+.vscode
+
 # Logs
 logs
 *.log
@@ -111,3 +117,7 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+
+# dotenv environment variables file
+.env
+.env.test
