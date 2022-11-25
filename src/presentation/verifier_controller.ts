@@ -40,7 +40,7 @@ export async function verifierController(
 
       // If something other than verifyta is requested
       if (verifier != 'verifyta') {
-        reply.code(404).send('Verifier not found.');
+        reply.code(404).send(`Verifier "${verifier}" not found.`);
         return;
       }
 

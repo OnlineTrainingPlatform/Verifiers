@@ -16,6 +16,12 @@ export class VerifytaVerifier implements IQueryVerifier {
     this.environment = environment ?? new VerifytaEnvironment();
   }
 
+  /**
+   * Verify an xml solution with input queries
+   * @param xmlFile
+   * @param queries
+   * @returns result of verification
+   */
   async verifySolution(
     xmlFile: string,
     queries: Array<string>,
@@ -29,8 +35,7 @@ export class VerifytaVerifier implements IQueryVerifier {
     xmlFile = uppaal_model_builder.build();
 
     const result = await this.environment.execute(xmlFile);
-    const parsedResult = this.parser.parse(result, queries);
 
-    return parsedResult;
+    return this.parser.parse(result, queries);
   }
 }

@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import * as fs from 'fs';
 import Os from 'os';
 import { verifytaLinuxPath, verifytaWindowsPath } from './paths';
+const SLASH = Os.platform() === 'linux' ? '/' : '\\';
 
 export class VerifytaEnvironment {
   /**
@@ -41,7 +42,6 @@ export class VerifytaEnvironment {
     return result;
   }
 
-  // TODO: input string is not formatted correctly, so file is saved formatting badly...
   /**
    * Create a temporary file for the xml string, as verifyta
    * takes the filepath to the xml file. Temporary file will be
@@ -58,9 +58,8 @@ export class VerifytaEnvironment {
         .update(contents + Math.random())
         .digest('hex') + '.xml';
 
-    // Save temerary file
-    const seperator = Os.platform() === 'linux' ? '/' : '\\';
-    const filepath = `${__dirname}${seperator}currentRequestXml${seperator}${hashedFilename}`;
+    // Save temporary file
+    const filepath = `${__dirname}${SLASH}currentRequestXml${SLASH}${hashedFilename}`;
     if (!fs.existsSync(filepath)) {
       fs.writeFileSync(filepath, contents, {
         flag: 'w+',
