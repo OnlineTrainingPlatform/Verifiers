@@ -34,7 +34,7 @@ export class VerifytaVerifier implements IQueryVerifier {
       // First, remove the queries which had an error by creating a new set of queries.
       const correct_queries: string[] = [];
       for (let i = 0; i < queries.length; i++) {
-        if (!incorrect_queries.includes(i + 1)) {
+        if (!incorrect_queries.includes(i)) {
           correct_queries.push(queries[i]);
         }
       }

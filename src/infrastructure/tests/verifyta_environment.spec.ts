@@ -16,7 +16,7 @@ describe('verifyta output parser', () => {
       'E<> Observer0.Finished && Observer0.call_count == 4',
       'E<> not deadlock',
     ];
-    const xmlfile = fs.readFileSync(xmlFiles.xmlfileWithTwoTrueQueries, 'utf8');
+    const xmlfile = fs.readFileSync(xmlFiles.xmlfileWithOneFalseAndOneTrueQuery, 'utf8');
     const verifier = new VerifytaVerifier(undefined, undefined);
 
     // Act
@@ -24,6 +24,7 @@ describe('verifyta output parser', () => {
     const query_keys = Array.from(result.passedQueriesResults.keys())
 
     // Assert
+    console.log(result)
     expect(result.hasParserError).toBe(true);
     expect(result.passedQueriesResults.size).toBe(5);
     expect(query_keys[0]).toBe(queries[0])
