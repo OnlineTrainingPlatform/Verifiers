@@ -1,6 +1,7 @@
 import { IQueryResult } from './i_query_result';
 import { ICmdResult } from './i_cmd_result';
 import { VerifytaResult } from './verifyta_result';
+import Os from 'os';
 
 export class VerifytaOutputParser {
   /**
@@ -30,15 +31,47 @@ export class VerifytaOutputParser {
       );
     }
 
+    /* Example with query file
+    Verifying formula 1 at q1.q:1
+    -- Formula is NOT satisfied.
+    -- States stored : 1 states
+    -- States explored : 0 states
+    -- CPU user time used : 0 ms
+    -- Virtual memory used : 48624 KiB
+    -- Resident memory used : 9136 KiB
+   
+   Verifying formula 2 at q1.q:2
+    -- Formula is satisfied.
+    -- States stored : 9 states
+    -- States explored : 9 states
+    -- CPU user time used : 0 ms
+    -- Virtual memory used : 48624 KiB
+    -- Resident memory used : 9196 KiB
+    */
+
+    /* Example without a query file
+    Verifying formula 1 at /nta/queries/query[1]/formula
+    -- Formula is NOT satisfied.
+    -- States stored : 1 states
+    -- States explored : 0 states
+    -- CPU user time used : 0 ms
+    -- Virtual memory used : 48612 KiB
+    -- Resident memory used : 8880 KiB
+   
+   Verifying formula 2 at /nta/queries/query[2]/formula
+    -- Formula is satisfied.
+    -- States stored : 9 states
+    -- States explored : 9 states
+    -- CPU user time used : 0 ms
+    -- Virtual memory used : 48612 KiB
+    -- Resident memory used : 9192 KiB
+    */
+
     //Check queries
-    const lines = verifytaOuput.verifierOutput.split('\n');
+    const lines = verifytaOuput.verifierOutput.split(Os.EOL);
     const queryMap = new Map<string, boolean>();
     let queryNumber = 0;
-
-    // Go through entire output
-    // if a line includes "verifying formula", the next line
-    // will tell if it was satisfied or not
-    // update query in map depending
+    
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].includes('Verifying formula')) {
         if (lines[i + 1].includes('Formula is satisfied')) {

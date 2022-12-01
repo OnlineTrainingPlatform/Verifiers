@@ -11,12 +11,18 @@ export class VerifytaEnvironment {
    * @param xmlFileString The xml file as a string
    * @returns Promise of cmd result from verifyta
    */
-  async execute(xmlFileString: string): Promise<ICmdResult> {
-    const filepath = this.tempSaveFile(xmlFileString);
+  async execute(xmlFileString: string, queries: string[] | undefined): Promise<ICmdResult> {
+    const modelFilepath = this.saveXmlModelFile(xmlFileString);
+    
+    const verifytaPath = Os.platform() === 'linux' ? verifytaLinuxPath() : verifytaWindowsPath();
 
-    const verifytaPath =
-      Os.platform() === 'linux' ? verifytaLinuxPath() : verifytaWindowsPath();
-    const command = `${verifytaPath} -u ${filepath}`;
+    let command = `${verifytaPath} ${modelFilepath}`;
+    if (queries) {
+      const queryFilePath = this.saveQueryFile(queries);
+      command += ` ${queryFilePath}`
+    }
+    // s: silence-progress, q: no-summary, u: summary
+    command += " -squ"
 
     const shell = Os.platform() === 'linux' ? undefined : 'CMD.exe';
 
@@ -31,7 +37,7 @@ export class VerifytaEnvironment {
       });
     })
       .then((res) => {
-        fs.unlinkSync(filepath); // Delete temp file
+        fs.unlinkSync(modelFilepath); // Delete temp file
         return res;
       })
       .catch((error) => {
@@ -41,7 +47,20 @@ export class VerifytaEnvironment {
     return result;
   }
 
-  // TODO: input string is not formatted correctly, so file is saved formatting badly...
+  saveQueryFile(queries: string[]): string {
+    // Create the query file contents
+    const contents = queries.join(Os.EOL);
+
+    // Create unique name for the xmlfile
+    const hashedFilename =
+      crypto
+        .createHash('md5')
+        .update(contents + Math.random())
+        .digest('hex') + '.q';
+
+    return this.saveFile(contents, hashedFilename);
+  }
+
   /**
    * Create a temporary file for the xml string, as verifyta
    * takes the filepath to the xml file. Temporary file will be
@@ -50,7 +69,7 @@ export class VerifytaEnvironment {
    * An xml file as a string
    * @returns filepath
    */
-  tempSaveFile(contents: string): string {
+  saveXmlModelFile(contents: string): string {
     // Create unique name for the xmlfile
     const hashedFilename =
       crypto
@@ -58,15 +77,20 @@ export class VerifytaEnvironment {
         .update(contents + Math.random())
         .digest('hex') + '.xml';
 
+    return this.saveFile(contents, hashedFilename);
+  }
+
+  saveFile(contents: string, name: string): string {
     // Save temerary file
     const seperator = Os.platform() === 'linux' ? '/' : '\\';
-    const filepath = `${__dirname}${seperator}currentRequestXml${seperator}${hashedFilename}`;
+    const filepath = `${__dirname}${seperator}currentRequestXml${seperator}${name}`;
     if (!fs.existsSync(filepath)) {
       fs.writeFileSync(filepath, contents, {
         flag: 'w+',
       });
+    } else {
+      throw new Error("File path for temporary file already exists")
     }
-
     return filepath;
   }
 }

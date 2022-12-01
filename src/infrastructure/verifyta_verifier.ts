@@ -2,7 +2,6 @@ import { IQueryVerifier } from './i_query_verifier';
 import { VerifytaOutputParser } from './verifyta_output_parser';
 import { VerifytaEnvironment } from './verifyta_environment';
 import { IQueryResult } from './i_query_result';
-import { UppaalXmlModelBuilder } from './uppaal_xml_model_builder';
 
 export class VerifytaVerifier implements IQueryVerifier {
   private readonly parser: VerifytaOutputParser;
@@ -18,10 +17,9 @@ export class VerifytaVerifier implements IQueryVerifier {
 
   async verifySolution(
     xmlFile: string,
-    queries: Array<string>,
+    queries: string[],
   ): Promise<IQueryResult> {
-    
-    const result = await this.environment.execute(xmlFile);
+    const result = await this.environment.execute(xmlFile, queries);
     const parsedResult = this.parser.parse(result, queries);
 
     return parsedResult;
