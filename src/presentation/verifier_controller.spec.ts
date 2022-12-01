@@ -8,6 +8,41 @@ import { IQueryResult } from '../infrastructure/i_query_result';
 describe('/verifier/verifyta', () => {
   const server = fastify();
   server.register(verifierController);
+  it('has correct bindings in response body', async () => {
+    // Arrange
+    const expectedResponseCode = 200;
+    const xmlFile = fs.readFileSync(xmlFiles.xmlfileWithTwoTrueQueries, 'utf8');
+
+    // Act
+    const response = await server.inject({
+      method: 'post',
+      url: `/verifiers/verifyta`,
+      payload: {
+        solution: xmlFile,
+        queries: [
+          {
+            query: 'A[] Switch.x < 4',
+          },
+          {
+            query: 'A[] Switch.x < 10',
+          },
+        ],
+      },
+    });
+
+    const payload = JSON.parse(response.payload);
+
+    // Assert
+    expect(response.statusCode).toBe(expectedResponseCode);
+    expect(typeof payload).toBe('object');
+    expect(typeof payload.hasParserError).toBe('boolean');
+    expect(typeof payload.hasSyntaxError).toBe('boolean');
+    Object.entries(payload.queryResults).forEach(([key, value]: any) => {
+      expect(typeof key).toBe('string');
+      expect(typeof value).toBe('boolean');
+    });
+  });
+
   it('Returns status 400 if there is no xml string in request body', async () => {
     // Arrange
     const expectedResponseCode = 400;

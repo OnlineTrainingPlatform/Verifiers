@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import * as fs from 'fs';
 import Os from 'os';
 import { verifytaLinuxPath, verifytaWindowsPath } from './paths';
+const SLASH = Os.platform() === 'linux' ? '/' : '\\';
 
 export class VerifytaEnvironment {
   /**
@@ -13,14 +14,16 @@ export class VerifytaEnvironment {
    */
   async execute(xmlFileString: string, queries: string[] | undefined): Promise<ICmdResult> {
     const modelFilepath = this.saveXmlModelFile(xmlFileString);
-    
-    const verifytaPath = Os.platform() === 'linux' ? verifytaLinuxPath() : verifytaWindowsPath();
+    let queryFilePath: string | undefined = undefined;
 
+    const verifytaPath = Os.platform() === 'linux' ? verifytaLinuxPath() : verifytaWindowsPath();
     let command = `${verifytaPath} ${modelFilepath}`;
+
     if (queries) {
-      const queryFilePath = this.saveQueryFile(queries);
+      queryFilePath = this.saveQueryFile(queries);
       command += ` ${queryFilePath}`
     }
+
     // s: silence-progress, q: no-summary, u: summary
     command += " -squ"
 
@@ -37,7 +40,10 @@ export class VerifytaEnvironment {
       });
     })
       .then((res) => {
-        fs.unlinkSync(modelFilepath); // Delete temp file
+        fs.unlinkSync(modelFilepath); // Delete temp model file
+        if (queryFilePath !== undefined) {
+          fs.unlinkSync(queryFilePath); // Remove temp query file
+        }
         return res;
       })
       .catch((error) => {

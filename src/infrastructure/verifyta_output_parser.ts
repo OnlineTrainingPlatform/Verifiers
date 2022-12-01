@@ -12,7 +12,7 @@ export class VerifytaOutputParser {
    * @param queries An array of the names of each query run
    * @returns the parsed result as an IQueryResult
    */
-  parse(verifytaOuput: ICmdResult, queries: Array<string>): IQueryResult {
+  parse(verifytaOuput: ICmdResult, queries: string[]): IQueryResult {
     //If there is a syntax error
     if (verifytaOuput.verifierError.includes('syntax error')) {
       return new VerifytaResult(

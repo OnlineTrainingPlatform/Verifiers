@@ -38,13 +38,17 @@ export class UppaalXmlModelBuilder {
     return this.xml.includes('<query>');
   }
 
+  /**
+   * Remove all <query></query> tags (and what's inside them).
+   * @returns xml without "query" tags
+   */
   public remove_all_query_tags(): UppaalXmlModelBuilder {
-    // If we dont have either an opening or closing tag then return
+    // If we dont have either an opening or closing "queries" tag then return
     if (!this.has_queries()) {
       return this;
     }
 
-    // If we dont have a "query" then the "queries" are empty
+    // If we dont have a "query" tag then the "queries" tag is empty
     if (!this.has_a_query()) {
       return this;
     }
@@ -58,8 +62,26 @@ export class UppaalXmlModelBuilder {
     // The first character before "<"
     const end_index = queries_closing_tag_index - 1;
 
-    // If the start idnex is either a "\n" or "\t" then add one to the index
+    // If the start index is either a "\n", "\r" or "\t", then a new index must be calculated.
     const start_char = this.xml.charAt(start_index);
+    start_index = this.IndexAfterStartChar(start_index, start_char);
+
+    // Uses slice to "cut away" the "query" tags in "queries"
+    const start_string = this.xml.slice(0, start_index);
+    const end_string = this.xml.slice(end_index, this.xml.length);
+
+    this.xml = start_string + end_string;
+
+    return this;
+  }
+
+  /**
+   * Get start index - start index will only be affected if start char is \n, \t or \r.
+   * @param start_index
+   * @param start_char
+   * @returns start index
+   */
+  public IndexAfterStartChar(start_index: number, start_char: string): number {
     if (Os.platform() === 'linux') {
       if (start_char === '\t' || start_char === '\n') {
         start_index += 1;
@@ -67,6 +89,7 @@ export class UppaalXmlModelBuilder {
         start_index -= 1;
       }
     } else {
+      // Windows
       if (start_char === '\t' || start_char === '\n') {
         start_index += 1;
       } else if (start_char === '\r') {
@@ -76,15 +99,15 @@ export class UppaalXmlModelBuilder {
       }
     }
 
-    // Uses clise to "cut away" the "query" tags in "queries"
-    const start_string = this.xml.slice(0, start_index);
-    const end_string = this.xml.slice(end_index, this.xml.length);
-
-    this.xml = start_string + end_string;
-
-    return this;
+    return start_index;
   }
 
+  /**
+   * Add "query" tag, query and comment to xml file.
+   * @param query
+   * @param comment
+   * @returns
+   */
   public add_query_tag(
     query: string,
     comment: string | undefined = undefined,
@@ -106,10 +129,11 @@ export class UppaalXmlModelBuilder {
       ? this.xml.indexOf('</queries>')
       : this.xml.indexOf('</nta>');
 
-    // Uses clise to "cut away" the "query" tags in "queries"
+    // Uses slice to "cut away" the "query" tags in "queries"
     const start_string = this.xml.slice(0, end_index);
     const end_string = this.xml.slice(end_index, this.xml.length);
 
+    //Insert query.
     this.xml = start_string + query_tag + end_string;
 
     return this;
