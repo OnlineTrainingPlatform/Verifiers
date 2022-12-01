@@ -2,9 +2,33 @@ import { VerifytaEnvironment } from '../verifyta_environment';
 import * as xmlFiles from '../../test_files/xml_example_files';
 import * as fs from 'fs';
 import Os from 'os';
+import { VerifytaVerifier } from '../verifyta_verifier';
 
 describe('verifyta output parser', () => {
   const environment = new VerifytaEnvironment();
+
+  it('marks queries which contains an error as unsatisfied', async () => {
+    // Arrange
+    const queries: string[] = [
+      "A[] deadlock",
+      "A[] not deadlock",
+      "E<> not (Boy0.Available && Boy1.Busy)",
+      "E<> Observer0.Finished && Observer0.call_count == 4",
+      "E<> not deadlock",
+    ]
+    const xmlfile = fs.readFileSync(
+      xmlFiles.xmlfileWithTwoTrueQueries,
+      'utf8'
+    );
+    const verifier = new VerifytaVerifier(undefined, undefined);
+
+    // Act
+    const result = await verifier.verifySolution(xmlfile, queries);
+
+    // Assert
+    expect(result.hasParserError).toBe(true);
+    expect(result.passedQueriesResults.size).toBe(5);
+  })
 
   it(
     'returns two queries passing',
