@@ -55,7 +55,7 @@ export class VerifytaVerifier implements IQueryVerifier {
 
       // Fourth, mark all errorfull queries as "not satisfied"
       for (const query of incorrect_queries) {
-        query_results.set(queries[query - 1], false);
+        query_results.set(queries[query], false);
       }
 
       // Fifth, order the queries to match the original
