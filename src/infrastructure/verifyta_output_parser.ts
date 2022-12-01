@@ -23,13 +23,24 @@ export class VerifytaOutputParser {
     }
 
     //If there is a parser error
-    if (verifytaOuput.verifierError.includes('parser error')) {
+    if (verifytaOuput.verifierError.includes('parser error') || verifytaOuput.verifierError.includes('[error]')) {
       return new VerifytaResult(
         this.createQueryMapAllFalse(queries),
         false,
         true,
       );
     }
+
+    /* Where query contains a location unkown in the model
+    ./test-models/lightswitch_oneQueriesFailingOnePassing.xml::1: [error] Unknown identifier: Boy0.
+    ./test-models/lightswitch_oneQueriesFailingOnePassing.xml::1: [error] false is not a structure.
+    ./test-models/lightswitch_oneQueriesFailingOnePassing.xml::1: [error] Unknown identifier: Boy1.
+    ./test-models/lightswitch_oneQueriesFailingOnePassing.xml::1: [error] false is not a structure.
+    ./test-models/lightswitch_oneQueriesFailingOnePassing.xml::2: [error] Unknown identifier: Observer0.
+    ./test-models/lightswitch_oneQueriesFailingOnePassing.xml::2: [error] false is not a structure.
+    ./test-models/lightswitch_oneQueriesFailingOnePassing.xml::2: [error] Unknown identifier: Observer0.
+    ./test-models/lightswitch_oneQueriesFailingOnePassing.xml::2: [error] false is not a structure
+    */
 
     /* Example with query file
     Verifying formula 1 at q1.q:1
