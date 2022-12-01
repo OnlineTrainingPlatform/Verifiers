@@ -10,25 +10,28 @@ describe('verifyta output parser', () => {
   it('marks queries which contains an error as unsatisfied', async () => {
     // Arrange
     const queries: string[] = [
-      "A[] deadlock",
-      "A[] not deadlock",
-      "E<> not (Boy0.Available && Boy1.Busy)",
-      "E<> Observer0.Finished && Observer0.call_count == 4",
-      "E<> not deadlock",
-    ]
-    const xmlfile = fs.readFileSync(
-      xmlFiles.xmlfileWithTwoTrueQueries,
-      'utf8'
-    );
+      'A[] deadlock',
+      'A[] not deadlock',
+      'E<> not (Boy0.Available && Boy1.Busy)',
+      'E<> Observer0.Finished && Observer0.call_count == 4',
+      'E<> not deadlock',
+    ];
+    const xmlfile = fs.readFileSync(xmlFiles.xmlfileWithTwoTrueQueries, 'utf8');
     const verifier = new VerifytaVerifier(undefined, undefined);
 
     // Act
     const result = await verifier.verifySolution(xmlfile, queries);
+    const query_keys = Array.from(result.passedQueriesResults.keys())
 
     // Assert
     expect(result.hasParserError).toBe(true);
     expect(result.passedQueriesResults.size).toBe(5);
-  })
+    expect(query_keys[0]).toBe(queries[0])
+    expect(query_keys[1]).toBe(queries[1])
+    expect(query_keys[2]).toBe(queries[2])
+    expect(query_keys[3]).toBe(queries[3])
+    expect(query_keys[4]).toBe(queries[4])
+  });
 
   it(
     'returns two queries passing',

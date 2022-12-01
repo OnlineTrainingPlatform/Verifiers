@@ -16,26 +16,29 @@ export class VerifytaOutputParser {
     ./test-models/lightswitch_oneQueriesFailingOnePassing.xml::4: [error] false is not a structure.
      */
 
-    const incorrect_queries: number[] = []
+    const incorrect_queries: number[] = [];
     const lines = verifytaOuput.verifierError.split(Os.EOL);
     for (const line of lines) {
-      if (line.includes(": [error]")) {
-        const start = ".xml::"
-        const end = ": [error]"
+      if (line.includes(': [error]')) {
+        const start = '.xml::';
+        const end = ': [error]';
         const query_index_string = line.slice(
-          line.indexOf(start) + start.length, line.indexOf(end)
+          line.indexOf(start) + start.length,
+          line.indexOf(end),
         );
-        
+
         const query_index = Number(query_index_string);
 
-        if (!Number.isNaN(query_index) && !incorrect_queries.includes(query_index)) {
-          incorrect_queries.push(query_index)
+        if (
+          !Number.isNaN(query_index) &&
+          !incorrect_queries.includes(query_index)
+        ) {
+          incorrect_queries.push(query_index - 1);
         }
       }
     }
 
-    
-    return incorrect_queries
+    return incorrect_queries;
   }
 
   /**
@@ -123,29 +126,41 @@ export class VerifytaOutputParser {
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].includes('Verifying formula')) {
         // Satisfied: First line is either "Formula is satisfied" or "formula is not satisfied"
-        const satisfied = lines[i + 1].includes("-- Formula is satisfied");
+        const satisfied = lines[i + 1].includes('-- Formula is satisfied');
         // States stored: Remove " -- States stored : " and " states"
         const states_stored_string = lines[i + 2];
-        const states_stored = Number(states_stored_string.slice(
-          " -- States stored : ".length, states_stored_string.length - " states".length
-        ));
+        const states_stored = Number(
+          states_stored_string.slice(
+            ' -- States stored : '.length,
+            states_stored_string.length - ' states'.length,
+          ),
+        );
         // States explored: Remove " -- States explored : " and " states"
         const states_explored_string = lines[1 + 3];
-        const states_explored = Number(states_explored_string.slice(
-          " -- States explored : ".length, states_explored_string.length - " states".length
-        ));
+        const states_explored = Number(
+          states_explored_string.slice(
+            ' -- States explored : '.length,
+            states_explored_string.length - ' states'.length,
+          ),
+        );
         // Virtual memory used: Remove " -- Virtual memory used : " and " KiB"
         const virtual_memory_used_string = lines[1 + 4];
-        const virtual_memory_used = Number(virtual_memory_used_string.slice(
-          " -- Virtual memory used : ".length, virtual_memory_used_string.length - " KiB".length
-        ));
+        const virtual_memory_used = Number(
+          virtual_memory_used_string.slice(
+            ' -- Virtual memory used : '.length,
+            virtual_memory_used_string.length - ' KiB'.length,
+          ),
+        );
         // Resident memory used: Remove " -- Resident memory used : " and " KiB"
         const resident_memory_used_string = lines[1 + 4];
-        const resident_memory_used = Number(resident_memory_used_string.slice(
-          " -- Resident memory used : ".length, resident_memory_used_string.length - " KiB".length
-        ));
+        const resident_memory_used = Number(
+          resident_memory_used_string.slice(
+            ' -- Resident memory used : '.length,
+            resident_memory_used_string.length - ' KiB'.length,
+          ),
+        );
 
-        queryMap.set(queries[queryNumber], satisfied)
+        queryMap.set(queries[queryNumber], satisfied);
 
         queryNumber++;
       }

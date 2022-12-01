@@ -29,32 +29,46 @@ export class VerifytaVerifier implements IQueryVerifier {
     let execution_result = await this.environment.execute(xmlFile, queries);
 
     // If any queries may use an "unkown identifier" then we want to still run the other queries.
-    const incorrect_queries = this.parser.incorrect_queries(execution_result)
+    const incorrect_queries = this.parser.incorrect_queries(execution_result);
     if (incorrect_queries.length > 0) {
       // First, remove the queries which had an error by creating a new set of queries.
-      const correct_queries: string[] = []
+      const correct_queries: string[] = [];
       for (let i = 0; i < queries.length; i++) {
         if (!incorrect_queries.includes(i + 1)) {
           correct_queries.push(queries[i]);
         }
       }
+
       // Second, rerun verifyta with correct queries (if any)
       if (correct_queries.length > 0) {
-        execution_result = await this.environment.execute(xmlFile, correct_queries);
+        execution_result = await this.environment.execute(
+          xmlFile,
+          correct_queries,
+        );
       }
+
       // Third parse new result
-      const parser_result = new VerifytaResult(
-        this.parser.parse(execution_result, correct_queries).passedQueriesResults,
-        false,
-        true
-      )
+      const query_results = this.parser.parse(
+        execution_result,
+        correct_queries,
+      ).passedQueriesResults;
 
-      // Third, mark all errorfull queries as "not satisfied"
+      // Fourth, mark all errorfull queries as "not satisfied"
       for (const query of incorrect_queries) {
-        parser_result.passedQueriesResults.set(queries[query - 1], false);
+        query_results.set(queries[query - 1], false);
       }
 
-      return parser_result;
+      // Fifth, order the queries to match the original
+      const ordered_query_results: Map<string, boolean> = new Map<
+        string,
+        boolean
+      >();
+      for (let i = 0; i < queries.length; i++) {
+        const query = queries[i];
+        ordered_query_results.set(query, query_results.get(query)!);
+      }
+
+      return new VerifytaResult(ordered_query_results, false, true);
     }
 
     return this.parser.parse(execution_result, queries);
