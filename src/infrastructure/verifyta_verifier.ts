@@ -20,14 +20,7 @@ export class VerifytaVerifier implements IQueryVerifier {
     xmlFile: string,
     queries: Array<string>,
   ): Promise<IQueryResult> {
-    const uppaal_model_builder = new UppaalXmlModelBuilder(
-      xmlFile,
-    ).remove_all_query_tags();
-    for (const query of queries) {
-      uppaal_model_builder.add_query_tag(query);
-    }
-    xmlFile = uppaal_model_builder.build();
-
+    
     const result = await this.environment.execute(xmlFile);
     const parsedResult = this.parser.parse(result, queries);
 
