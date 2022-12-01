@@ -82,7 +82,7 @@ export class VerifytaOutputParser {
     const lines = verifytaOuput.verifierOutput.split(Os.EOL);
     const queryMap = new Map<string, boolean>();
     let queryNumber = 0;
-    
+
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].includes('Verifying formula')) {
         if (lines[i + 1].includes('Formula is satisfied')) {

@@ -1,7 +1,7 @@
 import { VerifytaEnvironment } from '../verifyta_environment';
 import * as xmlFiles from '../../test_files/xml_example_files';
 import * as fs from 'fs';
-import Os from 'os'
+import Os from 'os';
 
 describe('verifyta output parser', () => {
   const environment = new VerifytaEnvironment();
@@ -95,7 +95,9 @@ describe('verifyta output parser', () => {
     const expected_string_index = 4; //Will be four if all four strings are found
 
     //Act
-    const cmdOutput = await (await environment.execute(xmlFile, undefined)).verifierOutput;
+    const cmdOutput = await (
+      await environment.execute(xmlFile, undefined)
+    ).verifierOutput;
     const cmdArray = cmdOutput.split('\n');
     let actual_string_index = 0;
 
@@ -132,7 +134,8 @@ describe('verifyta output parser', () => {
     const expected = '';
 
     //Act
-    const actual = (await environment.execute(xmlFile, undefined)).verifierOutput;
+    const actual = (await environment.execute(xmlFile, undefined))
+      .verifierOutput;
 
     //Assert
     expect(actual).toBe(expected);
@@ -144,7 +147,8 @@ describe('verifyta output parser', () => {
     const expected = true;
 
     //Act
-    const verifierError = (await environment.execute(xmlFile, undefined)).verifierError;
+    const verifierError = (await environment.execute(xmlFile, undefined))
+      .verifierError;
     const actual = verifierError.includes('parser error');
 
     //Assert
@@ -157,7 +161,8 @@ describe('verifyta output parser', () => {
     const expected = true;
 
     //Act
-    const verifierError = (await environment.execute(xmlFile, undefined)).verifierError;
+    const verifierError = (await environment.execute(xmlFile, undefined))
+      .verifierError;
     const actual = verifierError.includes('syntax error');
 
     //Assert
@@ -173,7 +178,8 @@ describe('verifyta output parser', () => {
     const expected = '';
 
     //Act
-    const actual = (await environment.execute(xmlFile, undefined)).verifierError;
+    const actual = (await environment.execute(xmlFile, undefined))
+      .verifierError;
 
     //Assert
     expect(actual).toBe(expected);
