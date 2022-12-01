@@ -57,7 +57,10 @@ export class VerifytaOutputParser {
     }
 
     //If there is a parser error
-    if (verifytaOuput.verifierError.includes('parser error') || verifytaOuput.verifierError.includes('[error]')) {
+    if (
+      verifytaOuput.verifierError.includes('parser error') ||
+      verifytaOuput.verifierError.includes('[error]')
+    ) {
       return new VerifytaResult(
         this.createQueryMapAllFalse(queries),
         false,
