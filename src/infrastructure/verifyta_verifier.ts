@@ -29,10 +29,10 @@ export class VerifytaVerifier implements IQueryVerifier {
     let execution_result = await this.environment.execute(xmlFile, queries);
 
     // If any queries may use an "unkown identifier" then we want to still run the other queries.
-    const incorrect_queries = this.parser.incorrect_queries(execution_result)
+    const incorrect_queries = this.parser.incorrect_queries(execution_result);
     if (incorrect_queries.length > 0) {
       // First, remove the queries which had an error by creating a new set of queries.
-      const correct_queries: string[] = []
+      const correct_queries: string[] = [];
       for (let i = 0; i < queries.length; i++) {
         if (!incorrect_queries.includes(i + 1)) {
           correct_queries.push(queries[i]);
@@ -40,14 +40,20 @@ export class VerifytaVerifier implements IQueryVerifier {
       }
       // Second, rerun verifyta with correct queries (if any)
       if (correct_queries.length > 0) {
-        execution_result = await this.environment.execute(xmlFile, correct_queries);
+        execution_result = await this.environment.execute(
+          xmlFile,
+          correct_queries,
+        );
       }
       // Third parse new result
       const parser_result = new VerifytaResult(
-        this.parser.parse(execution_result, correct_queries).passedQueriesResults,
+        this.parser.parse(
+          execution_result,
+          correct_queries,
+        ).passedQueriesResults,
         false,
-        true
-      )
+        true,
+      );
 
       // Third, mark all errorfull queries as "not satisfied"
       for (const query of incorrect_queries) {
