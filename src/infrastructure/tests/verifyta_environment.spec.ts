@@ -21,17 +21,16 @@ describe('verifyta output parser', () => {
 
     // Act
     const result = await verifier.verifySolution(xmlfile, queries);
-    const query_keys = Array.from(result.passedQueriesResults.keys())
+    const query_keys = Array.from(result.passedQueriesResults.keys());
 
     // Assert
-    console.log(result)
     expect(result.hasParserError).toBe(true);
     expect(result.passedQueriesResults.size).toBe(5);
-    expect(query_keys[0]).toBe(queries[0])
-    expect(query_keys[1]).toBe(queries[1])
-    expect(query_keys[2]).toBe(queries[2])
-    expect(query_keys[3]).toBe(queries[3])
-    expect(query_keys[4]).toBe(queries[4])
+    expect(query_keys[0]).toBe(queries[0]);
+    expect(query_keys[1]).toBe(queries[1]);
+    expect(query_keys[2]).toBe(queries[2]);
+    expect(query_keys[3]).toBe(queries[3]);
+    expect(query_keys[4]).toBe(queries[4]);
   });
 
   it(
