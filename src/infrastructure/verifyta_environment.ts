@@ -12,20 +12,24 @@ export class VerifytaEnvironment {
    * @param xmlFileString The xml file as a string
    * @returns Promise of cmd result from verifyta
    */
-  async execute(xmlFileString: string, queries: string[] | undefined): Promise<ICmdResult> {
+  async execute(
+    xmlFileString: string,
+    queries: string[] | undefined,
+  ): Promise<ICmdResult> {
     const modelFilepath = this.saveXmlModelFile(xmlFileString);
     let queryFilePath: string | undefined = undefined;
 
-    const verifytaPath = Os.platform() === 'linux' ? verifytaLinuxPath() : verifytaWindowsPath();
+    const verifytaPath =
+      Os.platform() === 'linux' ? verifytaLinuxPath() : verifytaWindowsPath();
     let command = `${verifytaPath} ${modelFilepath}`;
 
     if (queries) {
       queryFilePath = this.saveQueryFile(queries);
-      command += ` ${queryFilePath}`
+      command += ` ${queryFilePath}`;
     }
 
     // s: silence-progress, q: no-summary, u: summary
-    command += " -squ"
+    command += ' -squ';
 
     const shell = Os.platform() === 'linux' ? undefined : 'CMD.exe';
 
@@ -95,7 +99,7 @@ export class VerifytaEnvironment {
         flag: 'w+',
       });
     } else {
-      throw new Error("File path for temporary file already exists")
+      throw new Error('File path for temporary file already exists');
     }
     return filepath;
   }
