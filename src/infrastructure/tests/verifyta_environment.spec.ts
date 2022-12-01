@@ -16,7 +16,10 @@ describe('verifyta output parser', () => {
       'E<> Observer0.Finished && Observer0.call_count == 4',
       'E<> not deadlock',
     ];
-    const xmlfile = fs.readFileSync(xmlFiles.xmlfileWithOneFalseAndOneTrueQuery, 'utf8');
+    const xmlfile = fs.readFileSync(
+      xmlFiles.xmlfileWithOneFalseAndOneTrueQuery,
+      'utf8',
+    );
     const verifier = new VerifytaVerifier(undefined, undefined);
 
     // Act
